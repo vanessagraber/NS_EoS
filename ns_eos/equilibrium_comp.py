@@ -27,3 +27,15 @@ def relation_nmu_ne(n_e: float) -> float:
     else:
         n_mu = (n_e ** (2 / 3) - const) ** (3 / 2)
         return n_mu
+
+
+def relation_np_ne(n_e: float) -> float:
+    """function calculates the proton number density for a given electron number density;
+    obtained from the charge neutrality condition"""
+
+    # below first appearance of muons, electron and proton number density are equivalent
+    if n_e < const ** (3 / 2):
+        return n_e
+    # above the critical electron number density, muons contribute
+    else:
+        return relation_nmu_ne(n_e) + n_e
