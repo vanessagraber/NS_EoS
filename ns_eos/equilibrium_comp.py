@@ -55,6 +55,8 @@ class EquationOfState:
         alpha=0.14416,
     ):
         """
+        predefined parameters are for the NRAPR equation of state
+
         :param t0: Skyrme parameter
         :type t0: float
         :param t1: Skyrme parameter
@@ -131,10 +133,8 @@ class EquationOfState:
     def relation_ne_nb(self, n_b: np.ndarray) -> np.ndarray:
         """solving the relation gives the electron number density for any given baryon number density"""
 
-        output = np.empty(n_b.shape) * np.nan
+        vect_func = np.vectorize(self.func_to_minimize)
 
-        for i, x in enumerate(n_b):
-
-            output[i] = newton(self.func_to_minimize, 0.001, args=(x,))
+        output = newton(vect_func, 0.001, args=(n_b,))
 
         return output
