@@ -13,12 +13,12 @@ m_u = 1.0364270e-44  # atomic mass unit in MeV s^2/fm^2
 m_u_cgs = 1.66053906660e-24  # atomic mass unit in g
 m_mu = 0.113429 * m_u  # muon mass unit in MeV s^2/fm^2
 
-# constant related to the appearance of muon
+# constant in units of 1/fm**2 related to the appearance of muon
 muon_eqn_const = m_mu ** 2 * c ** 2 / (hbar ** 2 * (3 * np.pi ** 2) ** (2 / 3))
 
 
 def relation_nmu_ne(n_e: float) -> float:
-    """function relates the muon number density to a given electron number density;
+    """function relates the muon number density in 1/fm**3 to a given electron number density in 1/fm**3;
     calculated from the equality of the muon and electron chemical potentials"""
 
     # for low electron number densities, no muons are present
@@ -31,7 +31,7 @@ def relation_nmu_ne(n_e: float) -> float:
 
 
 def relation_np_ne(n_e: float) -> float:
-    """function calculates the proton number density for a given electron number density;
+    """function calculates the proton number density in 1/fm**3 for a given electron number density in 1/fm**3;
     obtained from the charge neutrality condition"""
 
     # below first appearance of muons, electron and proton number density are equivalent
@@ -102,8 +102,8 @@ class EquationOfState:
         return B1, B2, B3, B4, B5, B6
 
     def relative_chem_pot(self, n_b: float, n_p: float) -> float:
-        """function determines the relative chemical potential of the protons and neutrons as a
-        function of baryon and proton number densities using the parameters of the Skyrme Hamiltonian"""
+        """function determines the relative chemical potential in MeV of the protons and neutrons as a
+        function of baryon and proton number densities (in 1/fm**3) using the parameters of the Skyrme Hamiltonian"""
 
         b_vector = self._parameters_hamiltonian()
 
@@ -121,7 +121,7 @@ class EquationOfState:
 
     def func_to_minimize(self, n_e: float, n_b: float) -> float:
         """based on beta equilibrium, the function equates the relative nucleon chemical potentials
-         with the electron chemical potential"""
+         with the electron chemical potential for given electron and baryon number density in 1/fm**3"""
 
         n_p = relation_np_ne(n_e)
         del_mu = self.relative_chem_pot(n_b, n_p)
@@ -132,7 +132,7 @@ class EquationOfState:
         return func_min
 
     def relation_ne_nb(self, n_b: np.ndarray) -> np.ndarray:
-        """function solves for the electron number density for any given baryon number density"""
+        """function solves for the electron number density in 1/fm**3 for any given baryon number density in 1/fm**3"""
 
         vect_func = np.vectorize(self.func_to_minimize)
 
@@ -167,7 +167,7 @@ class EquationOfState:
         return x_mu
 
     def m_eff_n(self, n_b: np.ndarray) -> np.ndarray:
-        """function calculates the neutron effective mass for a given baryon number density"""
+        """function calculates the neutron effective mass in gram for a given baryon number density"""
 
         B3 = self._parameters_hamiltonian()[2]
         beta_3 = (2 * m_u * B3) / (hbar ** 2)
@@ -177,7 +177,7 @@ class EquationOfState:
         return m_eff_n
 
     def m_eff_p(self, n_b: np.ndarray) -> np.ndarray:
-        """function calculates the proton effective mass for a given baryon number density"""
+        """function calculates the proton effective mass in gram for a given baryon number density"""
 
         B3 = self._parameters_hamiltonian()[2]
         beta_3 = (2 * m_u * B3) / (hbar ** 2)
