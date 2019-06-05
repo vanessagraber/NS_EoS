@@ -10,6 +10,7 @@ from typing import Tuple
 c = 2.9979246e23  # speed of light in fm/s
 hbar = 6.582120e-22  # hbar in MeV s
 m_u = 1.0364270e-44  # atomic mass unit in MeV s^2/fm^2
+m_u_cgs = 1.66053906660e-24  # atomic mass unit in g
 m_mu = 0.113429 * m_u  # muon mass unit in MeV s^2/fm^2
 
 # constant related to the appearance of muon
@@ -143,7 +144,7 @@ class EquationOfState:
         """function calculates the electron fraction for any given baryon number density"""
 
         n_e = self.relation_ne_nb(n_b)
-        x_e = n_e/n_b
+        x_e = n_e / n_b
 
         return x_e
 
@@ -152,7 +153,7 @@ class EquationOfState:
 
         n_e = self.relation_ne_nb(n_b)
         vect_func = np.vectorize(relation_np_ne)
-        x_p = vect_func(n_e)/n_b
+        x_p = vect_func(n_e) / n_b
 
         return x_p
 
@@ -161,6 +162,26 @@ class EquationOfState:
 
         n_e = self.relation_ne_nb(n_b)
         vect_func = np.vectorize(relation_nmu_ne)
-        x_mu = vect_func(n_e)/n_b
+        x_mu = vect_func(n_e) / n_b
 
         return x_mu
+
+    def m_eff_n(self, n_b: np.ndarray) -> np.ndarray:
+        """function calculates the neutron effective mass for a given baryon number density"""
+
+        B3 = self._parameters_hamiltonian()[2]
+        beta_3 = (2 * m_u * B3) / (hbar ** 2)
+        x_p = self.x_p(n_b)
+        m_eff_n = m_u * (1 + beta_3 * n_b * (1 - x_p)) / (1 + beta_3 * n_b)
+
+        return m_eff_n
+
+    def m_eff_p(self, n_b: np.ndarray) -> np.ndarray:
+        """function calculates the proton effective mass for a given baryon number density"""
+
+        B3 = self._parameters_hamiltonian()[2]
+        beta_3 = (2 * m_u * B3) / (hbar ** 2)
+        x_p = self.x_p(n_b)
+        m_eff_p = m_u * (1 + beta_3 * n_b * x_p) / (1 + beta_3 * n_b)
+
+        return m_eff_p

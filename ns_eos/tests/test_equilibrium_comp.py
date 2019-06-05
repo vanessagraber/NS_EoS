@@ -41,6 +41,8 @@ def test_case_3():
         "x_e": np.array([0.038223]),
         "x_p": np.array([0.038223]),
         "x_mu": np.array([0.0]),
+        "m_eff_n": np.array([1.64218807e-24]),
+        "m_eff_p": np.array([[1.19878858e-24]]),
     }
 
     return data
@@ -54,6 +56,8 @@ def test_case_4():
         "x_e": np.array([0.056796]),
         "x_p": np.array([0.071554]),
         "x_mu": np.array([0.014757]),
+        "m_eff_n": np.array([[1.60724175e-24]]),
+        "m_eff_p": np.array([[9.68987117e-25]]),
     }
 
     return data
@@ -144,3 +148,27 @@ def test_x_mu_02(test_case_4):
     """verifying that the muon fraction is correctly calculated above muon threshold"""
     x_mu = test_case_4["eos"].x_mu(test_case_4["n_b"])
     assert np.abs(x_mu - test_case_4["x_mu"]) < TOL
+
+
+def test_m_eff_n_01(test_case_3):
+    """verifying that the neutron effective mass is correctly calculated below muon threshold"""
+    m_eff_n = test_case_3["eos"].m_eff_n(test_case_3["n_b"])
+    assert np.abs(m_eff_n - test_case_3["m_eff_n"]) < TOL
+
+
+def test_m_eff_n_02(test_case_4):
+    """verifying that the neutron effective mass is correctly calculated above muon threshold"""
+    m_eff_n = test_case_4["eos"].m_eff_n(test_case_4["n_b"])
+    assert np.abs(m_eff_n - test_case_4["m_eff_n"]) < TOL
+
+
+def test_m_eff_p_01(test_case_3):
+    """verifying that the proton effective mass is correctly calculated below muon threshold"""
+    m_eff_p = test_case_3["eos"].m_eff_p(test_case_3["n_b"])
+    assert np.abs(m_eff_p - test_case_3["m_eff_p"]) < TOL
+
+
+def test_m_eff_p_02(test_case_4):
+    """verifying that the proton effective mass is correctly calculated above muon threshold"""
+    m_eff_p = test_case_4["eos"].m_eff_p(test_case_4["n_b"])
+    assert np.abs(m_eff_p - test_case_4["m_eff_p"]) < TOL
