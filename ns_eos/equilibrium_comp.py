@@ -141,7 +141,7 @@ class EquationOfState:
         return output
 
     def x_e(self, n_b: np.ndarray) -> np.ndarray:
-        """function calculates the electron fraction for any given baryon number density"""
+        """function calculates the electron fraction for any given baryon number density in 1/fm**3"""
 
         n_e = self.relation_ne_nb(n_b)
         x_e = n_e / n_b
@@ -149,7 +149,7 @@ class EquationOfState:
         return x_e
 
     def x_p(self, n_b: np.ndarray) -> np.ndarray:
-        """function calculates the proton fraction for any given baryon number density"""
+        """function calculates the proton fraction for any given baryon number density in 1/fm**3"""
 
         n_e = self.relation_ne_nb(n_b)
         vect_func = np.vectorize(relation_np_ne)
@@ -158,7 +158,7 @@ class EquationOfState:
         return x_p
 
     def x_mu(self, n_b: np.ndarray) -> np.ndarray:
-        """function calculates the muon fraction for any given baryon number density"""
+        """function calculates the muon fraction for any given baryon number density in 1/fm**3"""
 
         n_e = self.relation_ne_nb(n_b)
         vect_func = np.vectorize(relation_nmu_ne)
@@ -167,7 +167,7 @@ class EquationOfState:
         return x_mu
 
     def m_eff_n(self, n_b: np.ndarray) -> np.ndarray:
-        """function calculates the neutron effective mass in gram for a given baryon number density"""
+        """function calculates the neutron effective mass in gram for a given baryon number density in 1/fm**3"""
 
         B3 = self._parameters_hamiltonian()[2]
         beta_3 = (2 * m_u * B3) / (hbar ** 2)
@@ -177,7 +177,7 @@ class EquationOfState:
         return m_eff_n
 
     def m_eff_p(self, n_b: np.ndarray) -> np.ndarray:
-        """function calculates the proton effective mass in gram for a given baryon number density"""
+        """function calculates the proton effective mass in gram for a given baryon number density in 1/fm**3"""
 
         B3 = self._parameters_hamiltonian()[2]
         beta_3 = (2 * m_u * B3) / (hbar ** 2)
