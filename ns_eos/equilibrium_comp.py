@@ -131,10 +131,36 @@ class EquationOfState:
         return func_min
 
     def relation_ne_nb(self, n_b: np.ndarray) -> np.ndarray:
-        """solving the relation gives the electron number density for any given baryon number density"""
+        """function solves for the electron number density for any given baryon number density"""
 
         vect_func = np.vectorize(self.func_to_minimize)
 
-        output = newton(vect_func, 0.001, args=(n_b,))
+        output = np.array([newton(vect_func, 0.001, args=(n_b,))])
 
         return output
+
+    def x_e(self, n_b: np.ndarray) -> np.ndarray:
+        """function calculates the electron fraction for any given baryon number density"""
+
+        n_e = self.relation_ne_nb(n_b)
+        x_e = n_e/n_b
+
+        return x_e
+
+    def x_p(self, n_b: np.ndarray) -> np.ndarray:
+        """function calculates the proton fraction for any given baryon number density"""
+
+        n_e = self.relation_ne_nb(n_b)
+        vect_func = np.vectorize(relation_np_ne)
+        x_p = vect_func(n_e)/n_b
+
+        return x_p
+
+    def x_mu(self, n_b: np.ndarray) -> np.ndarray:
+        """function calculates the muon fraction for any given baryon number density"""
+
+        n_e = self.relation_ne_nb(n_b)
+        vect_func = np.vectorize(relation_nmu_ne)
+        x_mu = vect_func(n_e)/n_b
+
+        return x_mu
