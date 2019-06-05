@@ -3,7 +3,7 @@ import numpy as np
 import pytest
 
 
-TOL = 1e-5
+TOL = 1e-6
 
 
 @pytest.fixture()
@@ -59,9 +59,9 @@ def test_case_4():
     return data
 
 
-def test_const(test_case_1):
+def test_muon_eqn_const(test_case_1):
     """verifying the value of the constant affecting the muon appearance"""
-    assert ec.muon_eqn_const == test_case_1["muon_eqn_const"]
+    assert np.abs(ec.muon_eqn_const - test_case_1["muon_eqn_const"]) < TOL
 
 
 def test_relation_nmu_ne_01(test_case_1):
