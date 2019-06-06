@@ -3,7 +3,7 @@ import numpy as np
 import pytest
 
 
-TOL = 1e-6
+TOL = 1e-5
 
 
 @pytest.fixture()
@@ -38,11 +38,11 @@ def test_case_3():
     data = {
         "eos": ec.EquationOfState(),
         "n_b": np.array([0.1]),
-        "x_e": np.array([0.038223]),
-        "x_p": np.array([0.038223]),
+        "x_e": np.array([0.0382232]),
+        "x_p": np.array([0.0382232]),
         "x_mu": np.array([0.0]),
         "m_eff_n": np.array([1.64218807e-24]),
-        "m_eff_p": np.array([[1.19878858e-24]]),
+        "m_eff_p": np.array([1.19878858e-24]),
     }
 
     return data
@@ -53,11 +53,11 @@ def test_case_4():
     data = {
         "eos": ec.EquationOfState(),
         "n_b": np.array([0.2]),
-        "x_e": np.array([0.056796]),
-        "x_p": np.array([0.071554]),
-        "x_mu": np.array([0.014757]),
-        "m_eff_n": np.array([[1.60724175e-24]]),
-        "m_eff_p": np.array([[9.68987117e-25]]),
+        "x_e": np.array([0.0567969]),
+        "x_p": np.array([0.0715545]),
+        "x_mu": np.array([0.0147575]),
+        "m_eff_n": np.array([1.60724175e-24]),
+        "m_eff_p": np.array([9.68987117e-25]),
     }
 
     return data
@@ -77,7 +77,7 @@ def test_relation_nmu_ne_01(test_case_1):
 def test_relation_nmu_ne_02(test_case_2):
     """verifying the relationship between the muon and electron density in presence of muons"""
     n_mu = ec.relation_nmu_ne(test_case_2["n_e"])
-    assert np.abs(n_mu - test_case_2["n_mu"]) < TOL
+    assert np.abs((n_mu - test_case_2["n_mu"])/n_mu) < TOL
 
 
 def test_relation_np_ne_01(test_case_1):
@@ -89,7 +89,7 @@ def test_relation_np_ne_01(test_case_1):
 def test_relation_np_ne_02(test_case_2):
     """verifying the relationship between the proton and electron density in absence of muons"""
     n_p = ec.relation_np_ne(test_case_2["n_e"])
-    assert np.abs(n_p - test_case_2["n_p"]) < TOL
+    assert np.abs((n_p - test_case_2["n_p"])/n_p) < TOL
 
 
 def test_relative_chem_pot(test_case_2):
@@ -97,7 +97,7 @@ def test_relative_chem_pot(test_case_2):
     rel_chem_pot = test_case_2["eos"].relative_chem_pot(
         test_case_2["n_b"], test_case_2["n_p"]
     )
-    assert np.abs(rel_chem_pot - test_case_2["del_mu"]) < TOL
+    assert np.abs((rel_chem_pot - test_case_2["del_mu"])/rel_chem_pot) < TOL
 
 
 def test_func_to_minimize(test_case_2):
@@ -105,70 +105,70 @@ def test_func_to_minimize(test_case_2):
     func_min = test_case_2["eos"].func_to_minimize(
         test_case_2["n_e"], test_case_2["n_b"]
     )
-    assert np.abs(func_min - test_case_2["min"]) < TOL
+    assert np.abs((func_min - test_case_2["min"])/func_min) < TOL
 
 
 def test_relation_ne_nb(test_case_2):
     """verifying the relation between the electron and baryon number densities"""
     n_e = test_case_2["eos"].relation_ne_nb(np.array([test_case_2["n_b"]]))
-    assert np.abs(n_e - test_case_2["n_e_min"]) < TOL
+    assert np.abs((n_e - test_case_2["n_e_min"])/n_e) < TOL
 
 
 def test_x_e_01(test_case_3):
     """verifying that the electron fraction is correctly calculated below muon threshold"""
     x_e = test_case_3["eos"].x_e(test_case_3["n_b"])
-    assert np.abs(x_e - test_case_3["x_e"]) < TOL
+    assert np.abs((x_e - test_case_3["x_e"])/x_e) < TOL
 
 
 def test_x_e_02(test_case_4):
     """verifying that the electron fraction is correctly calculated above muon threshold"""
     x_e = test_case_4["eos"].x_e(test_case_4["n_b"])
-    assert np.abs(x_e - test_case_4["x_e"]) < TOL
+    assert np.abs((x_e - test_case_4["x_e"])/x_e) < TOL
 
 
 def test_x_p_01(test_case_3):
     """verifying that the proton fraction is correctly calculated below muon threshold"""
     x_p = test_case_3["eos"].x_p(test_case_3["n_b"])
-    assert np.abs(x_p - test_case_3["x_p"]) < TOL
+    assert np.abs((x_p - test_case_3["x_p"])/x_p) < TOL
 
 
 def test_x_p_02(test_case_4):
     """verifying that the proton fraction is correctly calculated above muon threshold"""
     x_p = test_case_4["eos"].x_p(test_case_4["n_b"])
-    assert np.abs(x_p - test_case_4["x_p"]) < TOL
+    assert np.abs((x_p - test_case_4["x_p"])/x_p) < TOL
 
 
 def test_x_mu_01(test_case_3):
     """verifying that the muon fraction is correctly calculated below muon threshold"""
     x_mu = test_case_3["eos"].x_mu(test_case_3["n_b"])
-    assert np.abs(x_mu - test_case_3["x_mu"]) < TOL
+    assert x_mu == test_case_3["x_mu"]
 
 
 def test_x_mu_02(test_case_4):
     """verifying that the muon fraction is correctly calculated above muon threshold"""
     x_mu = test_case_4["eos"].x_mu(test_case_4["n_b"])
-    assert np.abs(x_mu - test_case_4["x_mu"]) < TOL
+    assert np.abs((x_mu - test_case_4["x_mu"])/x_mu) < TOL
 
 
 def test_m_eff_n_01(test_case_3):
     """verifying that the neutron effective mass is correctly calculated below muon threshold"""
     m_eff_n = test_case_3["eos"].m_eff_n(test_case_3["n_b"])
-    assert np.abs(m_eff_n - test_case_3["m_eff_n"]) < TOL
+    assert np.abs((m_eff_n - test_case_3["m_eff_n"])/m_eff_n) < TOL
 
 
 def test_m_eff_n_02(test_case_4):
     """verifying that the neutron effective mass is correctly calculated above muon threshold"""
     m_eff_n = test_case_4["eos"].m_eff_n(test_case_4["n_b"])
-    assert np.abs(m_eff_n - test_case_4["m_eff_n"]) < TOL
+    assert np.abs((m_eff_n - test_case_4["m_eff_n"])/m_eff_n) < TOL
 
 
 def test_m_eff_p_01(test_case_3):
     """verifying that the proton effective mass is correctly calculated below muon threshold"""
     m_eff_p = test_case_3["eos"].m_eff_p(test_case_3["n_b"])
-    assert np.abs(m_eff_p - test_case_3["m_eff_p"]) < TOL
+    assert np.abs((m_eff_p - test_case_3["m_eff_p"])/m_eff_p) < TOL
 
 
 def test_m_eff_p_02(test_case_4):
     """verifying that the proton effective mass is correctly calculated above muon threshold"""
     m_eff_p = test_case_4["eos"].m_eff_p(test_case_4["n_b"])
-    assert np.abs(m_eff_p - test_case_4["m_eff_p"]) < TOL
+    assert np.abs((m_eff_p - test_case_4["m_eff_p"])/m_eff_p) < TOL
