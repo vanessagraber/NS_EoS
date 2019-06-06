@@ -33,6 +33,25 @@ eos_NRAPR = ec.EquationOfState(
     alpha=0.14416,
 )
 
+x_e_NRAPR = eos_NRAPR.x_e(n_b)
+x_p_NRAPR = eos_NRAPR.x_p(n_b)
+x_mu_NRAPR = eos_NRAPR.x_mu(n_b)
+m_eff_n_NRAPR = eos_NRAPR.m_eff_n(n_b)
+m_eff_p_NRAPR = eos_NRAPR.m_eff_p(n_b)
+
+df_NRAPR = pd.DataFrame(
+    {
+        "n_b": n_b,
+        "x_e": x_e_NRAPR,
+        "x_p": x_p_NRAPR,
+        "x_mu": x_mu_NRAPR,
+        "m_eff_n": m_eff_n_NRAPR,
+        "m_eff_p": m_eff_p_NRAPR,
+    }
+)
+
+df_NRAPR.to_csv("./examples/data/parameters_NRAPR.txt", index=None, header=True)
+
 
 # ---- LNS EoS - parameters are taken from Cao et al. (2006) ---- #
 
@@ -48,6 +67,25 @@ eos_LNS = ec.EquationOfState(
     alpha=0.16667,
 )
 
+x_e_LNS = eos_LNS.x_e(n_b)
+x_p_LNS = eos_LNS.x_p(n_b)
+x_mu_LNS = eos_LNS.x_mu(n_b)
+m_eff_n_LNS = eos_LNS.m_eff_n(n_b)
+m_eff_p_LNS = eos_LNS.m_eff_p(n_b)
+
+df_LNS = pd.DataFrame(
+    {
+        "n_b": n_b,
+        "x_e": x_e_LNS,
+        "x_p": x_p_LNS,
+        "x_mu": x_mu_LNS,
+        "m_eff_n": m_eff_n_LNS,
+        "m_eff_p": m_eff_p_LNS,
+    }
+)
+
+df_LNS.to_csv("./examples/data/parameters_LNS.txt", index=None, header=True)
+
 
 # ---- SLy4 - parameters are taken from Chabanat et al. (1998) ---- #
 
@@ -62,3 +100,22 @@ eos_SLy4 = ec.EquationOfState(
     x3=1.354,
     alpha=0.14416,
 )
+
+x_e_SLy4 = eos_SLy4.x_e(n_b)
+x_p_SLy4 = eos_SLy4.x_p(n_b)
+x_mu_SLy4 = eos_SLy4.x_mu(n_b)
+m_eff_n_SLy4 = eos_SLy4.m_eff_n(n_b)
+m_eff_p_SLy4 = eos_SLy4.m_eff_p(n_b)
+
+df_SLy4 = pd.DataFrame(
+    {
+        "n_b": n_b,
+        "x_e": x_e_SLy4,
+        "x_p": x_p_SLy4,
+        "x_mu": x_mu_SLy4,
+        "m_eff_n": m_eff_n_SLy4,
+        "m_eff_p": m_eff_p_SLy4,
+    }
+)
+
+df_SLy4.to_csv("./examples/data/parameters_SLy4.txt", index=None, header=True)
