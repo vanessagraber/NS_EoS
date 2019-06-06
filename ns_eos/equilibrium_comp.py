@@ -131,14 +131,22 @@ class EquationOfState:
 
         return func_min
 
-    def relation_ne_nb(self, n_b: np.ndarray) -> np.ndarray:
+    def _relation_ne_nb(self, n_b: float) -> float:
         """function solves for the electron number density in 1/fm**3 for any given baryon number density in 1/fm**3"""
 
-        vect_func = np.vectorize(self.func_to_minimize)
-
-        output = np.array([newton(vect_func, 0.001, args=(n_b,))])
+        output = newton(self.func_to_minimize, 0.001, args=(n_b,))
 
         return output
+
+    def relation_ne_nb(self, n_b: np.ndarray) -> np.ndarray:
+        """function takes a numpy array of baryon number densities in 1/fm**3
+        and calculates the electron number density in 1/fm**3"""
+
+        vect_func = np.vectorize(self._relation_ne_nb)
+
+        n_e = vect_func(n_b)
+
+        return n_e
 
     def x_e(self, n_b: np.ndarray) -> np.ndarray:
         """function calculates the electron fraction for any given baryon number density in 1/fm**3"""
@@ -172,7 +180,7 @@ class EquationOfState:
         B3 = self._parameters_hamiltonian()[2]
         beta_3 = (2 * m_u * B3) / (hbar ** 2)
         x_p = self.x_p(n_b)
-        m_eff_n = m_u * (1 + beta_3 * n_b * (1 - x_p)) / (1 + beta_3 * n_b)
+        m_eff_n = m_u_cgs * (1 + beta_3 * n_b * (1 - x_p)) / (1 + beta_3 * n_b)
 
         return m_eff_n
 
@@ -182,6 +190,6 @@ class EquationOfState:
         B3 = self._parameters_hamiltonian()[2]
         beta_3 = (2 * m_u * B3) / (hbar ** 2)
         x_p = self.x_p(n_b)
-        m_eff_p = m_u * (1 + beta_3 * n_b * x_p) / (1 + beta_3 * n_b)
+        m_eff_p = m_u_cgs * (1 + beta_3 * n_b * x_p) / (1 + beta_3 * n_b)
 
         return m_eff_p
