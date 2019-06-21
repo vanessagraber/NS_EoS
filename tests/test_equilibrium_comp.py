@@ -41,10 +41,11 @@ def test_case_3():
         "x_e": np.array([0.0382232]),
         "x_p": np.array([0.0382232]),
         "x_mu": np.array([0.0]),
-        "n_p": 0.0038223,
-        "n_n": 0.0961777,
+        "n_p": np.array([0.0038223]),
+        "n_n": np.array([0.0961777]),
         "m_eff_n": np.array([1.64218807e-24]),
         "m_eff_p": np.array([1.19878858e-24]),
+        "lambda_eff": np.array([9.839113e-12]),
     }
 
     return data
@@ -58,10 +59,11 @@ def test_case_4():
         "x_e": np.array([0.0567969]),
         "x_p": np.array([0.0715545]),
         "x_mu": np.array([0.0147575]),
-        "n_p": 0.01431090,
-        "n_n": 0.18568910,
+        "n_p": np.array([0.01431090]),
+        "n_n": np.array([0.18568910]),
         "m_eff_n": np.array([1.60724175e-24]),
         "m_eff_p": np.array([9.68987117e-25]),
+        "lambda_eff": np.array([4.526990e-12])
     }
 
     return data
@@ -209,3 +211,17 @@ def test_m_eff_p_02(test_case_4):
     """verifying that the proton effective mass is correctly calculated above muon threshold"""
     m_eff_p = test_case_4["eos"].m_eff_p(test_case_4["n_b"])
     assert np.abs((m_eff_p - test_case_4["m_eff_p"]) / m_eff_p) < TOL
+
+
+# characteristic length scales
+
+def test_lambda_eff_01(test_case_3):
+    """verifying that the London length is correctly calculated below muon threshold"""
+    lambda_eff = test_case_3["eos"].lambda_eff(test_case_3["n_b"])
+    assert np.abs((lambda_eff - test_case_3["lambda_eff"]) / lambda_eff) < TOL
+
+
+def test_lambda_eff_02(test_case_4):
+    """verifying that the London length is correctly calculated above muon threshold"""
+    lambda_eff = test_case_4["eos"].lambda_eff(test_case_4["n_b"])
+    assert np.abs((lambda_eff - test_case_4["lambda_eff"]) / lambda_eff) < TOL
