@@ -7,11 +7,12 @@ import ns_eos.equilibrium_comp as ec
 
 
 # natural constants
-c = 2.9979246e23  # speed of light in fm/s
+c = 2.997925e23  # speed of light in fm/s
 hbar = 6.582120e-22  # hbar in MeV s
-m_u = 1.0364270e-44  # atomic mass unit in MeV s^2/fm^2
-m_u_cgs = 1.66053906660e-24  # atomic mass unit in g
-m_mu = 0.113429 * m_u  # muon mass unit in MeV s^2/fm^2
+m_u = 1.036427e-44  # atomic mass unit in MeV s**2/fm**2
+m_u_cgs = 1.660539e-24  # atomic mass unit in g
+m_mu = 0.113429 * m_u  # muon mass unit in MeV s**2/fm**2
+q = 1.199985  # electric charge in (MeV fm)**1/2
 
 
 # baryon number density and mass energy density in units of 1/fm**3 and g/cm**3, respectively
@@ -33,24 +34,27 @@ eos_NRAPR = ec.EquationOfState(
     alpha=0.14416,
 )
 
-x_e_NRAPR = eos_NRAPR.x_e(n_b)
-x_p_NRAPR = eos_NRAPR.x_p(n_b)
-x_mu_NRAPR = eos_NRAPR.x_mu(n_b)
-m_eff_n_NRAPR = eos_NRAPR.m_eff_n(n_b)
-m_eff_p_NRAPR = eos_NRAPR.m_eff_p(n_b)
+n_n_NRAPR = eos_NRAPR.n_n(n_b)
+n_p_NRAPR = eos_NRAPR.n_p(n_b)
+lambda_eff_NRAPR = eos_NRAPR.lambda_eff(n_b)
+# xi_n_NRAPR = eos_NRAPR.xi_n(n_b)
+# xi_p_NRAPR = eos_NRAPR.xi_p(n_b)
 
 df_NRAPR = pd.DataFrame(
     {
         "n_b": n_b,
-        "x_e": x_e_NRAPR,
-        "x_p": x_p_NRAPR,
-        "x_mu": x_mu_NRAPR,
-        "m_eff_n": m_eff_n_NRAPR,
-        "m_eff_p": m_eff_p_NRAPR,
+        "n_n": n_n_NRAPR,
+        "n_p": n_p_NRAPR,
+        "lambda_eff": lambda_eff_NRAPR,
+        # "xi_n": xi_n_NRAPR,
+        # "xi_p": xi_p_NRAPR,
     }
 )
 
-df_NRAPR.to_csv("./examples/data/parameters_NRAPR.txt", index=None, header=True)
+df_NRAPR.columns = pd.MultiIndex.from_tuples(
+    zip(df_NRAPR.columns, ["[1/fm**3]", "[1/fm**3]", "[1/fm**3]", "[cm]"])
+)
+df_NRAPR.to_csv("./examples/data/parameters_NRAPR.txt", index=False, header=True)
 
 
 # ---- LNS EoS - parameters are taken from Cao et al. (2006) ---- #
@@ -67,23 +71,26 @@ eos_LNS = ec.EquationOfState(
     alpha=0.16667,
 )
 
-x_e_LNS = eos_LNS.x_e(n_b)
-x_p_LNS = eos_LNS.x_p(n_b)
-x_mu_LNS = eos_LNS.x_mu(n_b)
-m_eff_n_LNS = eos_LNS.m_eff_n(n_b)
-m_eff_p_LNS = eos_LNS.m_eff_p(n_b)
+n_n_LNS = eos_LNS.n_n(n_b)
+n_p_LNS = eos_LNS.n_p(n_b)
+lambda_eff_LNS = eos_LNS.lambda_eff(n_b)
+# xi_n_LNS = eos_LNS.xi_n(n_b)
+# xi_p_LNS = eos_LNS.xi_p(n_b)
 
 df_LNS = pd.DataFrame(
     {
         "n_b": n_b,
-        "x_e": x_e_LNS,
-        "x_p": x_p_LNS,
-        "x_mu": x_mu_LNS,
-        "m_eff_n": m_eff_n_LNS,
-        "m_eff_p": m_eff_p_LNS,
+        "n_n": n_n_LNS,
+        "n_p": n_p_LNS,
+        "lambda_eff": lambda_eff_LNS,
+        # "xi_n": xi_n_LNS,
+        # "xi_p": xi_p_LNS,
     }
 )
 
+df_LNS.columns = pd.MultiIndex.from_tuples(
+    zip(df_LNS.columns, ["[1/fm**3]", "[1/fm**3]", "[1/fm**3]", "[cm]"])
+)
 df_LNS.to_csv("./examples/data/parameters_LNS.txt", index=None, header=True)
 
 
@@ -101,21 +108,24 @@ eos_SLy4 = ec.EquationOfState(
     alpha=0.14416,
 )
 
-x_e_SLy4 = eos_SLy4.x_e(n_b)
-x_p_SLy4 = eos_SLy4.x_p(n_b)
-x_mu_SLy4 = eos_SLy4.x_mu(n_b)
-m_eff_n_SLy4 = eos_SLy4.m_eff_n(n_b)
-m_eff_p_SLy4 = eos_SLy4.m_eff_p(n_b)
+n_n_SLy4 = eos_SLy4.n_n(n_b)
+n_p_SLy4 = eos_SLy4.n_p(n_b)
+lambda_eff_SLy4 = eos_SLy4.lambda_eff(n_b)
+# xi_n_SLy4 = eos_SLy4.xi_n(n_b)
+# xi_p_SLy4 = eos_SLy4.xi_p(n_b)
 
 df_SLy4 = pd.DataFrame(
     {
         "n_b": n_b,
-        "x_e": x_e_SLy4,
-        "x_p": x_p_SLy4,
-        "x_mu": x_mu_SLy4,
-        "m_eff_n": m_eff_n_SLy4,
-        "m_eff_p": m_eff_p_SLy4,
+        "n_n": n_n_SLy4,
+        "n_p": n_p_SLy4,
+        "lambda_eff": lambda_eff_SLy4,
+        # "xi_n": xi_n_SLy4,
+        # "xi_p": xi_p_SLy4,
     }
 )
 
+df_SLy4.columns = pd.MultiIndex.from_tuples(
+    zip(df_SLy4.columns, ["[1/fm**3]", "[1/fm**3]", "[1/fm**3]", "[cm]"])
+)
 df_SLy4.to_csv("./examples/data/parameters_SLy4.txt", index=None, header=True)
