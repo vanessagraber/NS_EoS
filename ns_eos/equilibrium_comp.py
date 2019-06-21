@@ -148,6 +148,8 @@ class EquationOfState:
 
         return n_e
 
+    # particle fractions
+
     def x_e(self, n_b: np.ndarray) -> np.ndarray:
         """function calculates the electron fraction for any given baryon number density in 1/fm**3"""
 
@@ -173,6 +175,25 @@ class EquationOfState:
         x_mu = vect_func(n_e) / n_b
 
         return x_mu
+
+    # number densities
+
+    def n_p(self, n_b: np.ndarray) -> np.ndarray:
+        """function calculates the proton number density in 1/fm**3 for any given baryon number density in 1/fm**3"""
+
+        x_p = self.x_p(n_b)
+        n_p = n_b * x_p
+
+        return n_p
+
+    def n_n(self, n_b: np.ndarray) -> np.ndarray:
+        """function calculates the neutron number density in 1/fm**3 for any given baryon number density in 1/fm**3"""
+
+        n_n = n_b - self.n_p(n_b)
+
+        return n_n
+
+    # effective masses
 
     def m_eff_n(self, n_b: np.ndarray) -> np.ndarray:
         """function calculates the neutron effective mass in gram for a given baryon number density in 1/fm**3"""
