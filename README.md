@@ -1,2 +1,2 @@
 # NS_EoS
-calculating neutron star parameters for realistic equations of state
+Calculating neutron star parameters for a realistic equations of state.
