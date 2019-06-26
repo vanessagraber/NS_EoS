@@ -290,6 +290,26 @@ class EquationOfState:
             * (m_eff_n + m_eff_p - m_u_cgs)
             / m_eff_n
         ) ** (1 / 2)
-        lambda_eff = lambda_eff_fm * 1e-13
+        lambda_eff = lambda_eff_fm * fm
 
         return lambda_eff
+
+    def xi_n(self, n_b: np.ndarray) -> np.ndarray:
+        """function calculates the neutron coherence length in cm for given baryon number density in 1/fm**3"""
+
+        v_F_n = hbar * self.k_F_n(n_b) / self.m_eff_L_n(n_b) * MeV / fm
+        vect_func = np.vectorize(gp.gap_neutrons)
+        Delta_n = vect_func(self.k_F_n(n_b))
+        xi_n = hbar * v_F_n / (np.pi * Delta_n)
+
+        return xi_n
+
+    def xi_p(self, n_b: np.ndarray) -> np.ndarray:
+        """function calculates the proton coherence length in cm for given baryon number density in 1/fm**3"""
+
+        v_F_p = hbar * self.k_F_p(n_b) / self.m_eff_L_p(n_b) * MeV / fm
+        vect_func = np.vectorize(gp.gap_protons)
+        Delta_p = vect_func(self.k_F_p(n_b))
+        xi_p = hbar * v_F_p / (np.pi * Delta_p)
+
+        return xi_p

@@ -50,6 +50,8 @@ def test_case_3():
         "k_F_n": np.array([1.417420]),
         "k_F_p": np.array([0.483707]),
         "lambda_eff": np.array([9.839113e-12]),
+        "xi_n": np.array([2.050619e-10]),
+        "xi_p": np.array([1.094111e-12]),
     }
 
     return data
@@ -72,6 +74,8 @@ def test_case_4():
         "k_F_n": np.array([1.764964]),
         "k_F_p": np.array([0.751097]),
         "lambda_eff": np.array([4.526990e-12]),
+        "xi_n": np.array([6.831531e-11]),
+        "xi_p": np.array([1.747953e-12]),
     }
 
     return data
@@ -288,3 +292,27 @@ def test_lambda_eff_02(test_case_4):
     """verifying that the London length is correctly calculated above muon threshold"""
     lambda_eff = test_case_4["eos"].lambda_eff(test_case_4["n_b"])
     assert np.abs((lambda_eff - test_case_4["lambda_eff"]) / lambda_eff) < TOL
+
+
+def test_xi_n_01(test_case_3):
+    """verifying that the neutron coherence length is correctly calculated below muon threshold"""
+    xi_n = test_case_3["eos"].xi_n(test_case_3["n_b"])
+    assert np.abs((xi_n - test_case_3["xi_n"]) / xi_n) < TOL
+
+
+def test_xi_n_02(test_case_4):
+    """verifying that the neutron coherence length is correctly calculated above muon threshold"""
+    xi_n = test_case_4["eos"].xi_n(test_case_4["n_b"])
+    assert np.abs((xi_n - test_case_4["xi_n"]) / xi_n) < TOL
+
+
+def test_xi_p_01(test_case_3):
+    """verifying that the proton coherence length is correctly calculated below muon threshold"""
+    xi_p = test_case_3["eos"].xi_p(test_case_3["n_b"])
+    assert np.abs((xi_p - test_case_3["xi_p"]) / xi_p) < TOL
+
+
+def test_xi_p_02(test_case_4):
+    """verifying that the proton coherence length is correctly calculated above muon threshold"""
+    xi_p = test_case_4["eos"].xi_p(test_case_4["n_b"])
+    assert np.abs((xi_p - test_case_4["xi_p"]) / xi_p) < TOL
