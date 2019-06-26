@@ -1,10 +1,13 @@
-"""Calculation of chemical potentials based on baryon conservation, charge neutrality, beta equilibrium
-    and muon production rate for a given set of Skyrme parameters as done in Chamel (2008)
+"""Calculation of the neutron star composition based on baryon conservation, charge neutrality, beta equilibrium
+    and muon production rate for a given set of Skyrme parameters as done in Chamel (2008). The superfluid neutron and
+    superconducting proton gap in the neutron star core following the parametrisation introduced in Andersson et al.
+    (2005) and used in Ho et al. (2012).
 """
 
 import numpy as np
 from scipy.optimize import newton
 from typing import Tuple
+import ns_eos.gap_parametrisation as gp
 
 # natural constants
 c = 2.997925e23  # speed of light in fm/s
@@ -216,6 +219,22 @@ class EquationOfState:
 
         return m_eff_p
 
+    # Fermi wave numbers
+
+    def k_F_n(self, n_b: np.ndarray) -> np.ndarray:
+        """function calculates the neutron Fermi wave vector in 1/fm for a given baryon number density in 1/fm**3"""
+
+        k_F_n = (3 * np.pi ** 2 * n_b * (1 - self.x_p(n_b))) ** (1 / 3)
+
+        return k_F_n
+
+    def k_F_p(self, n_b: np.ndarray) -> np.ndarray:
+        """function calculates the proton Fermi wave vector in 1/fm for a given baryon number density in 1/fm**3"""
+
+        k_F_p = (3 * np.pi ** 2 * n_b * self.x_p(n_b)) ** (1 / 3)
+
+        return k_F_p
+
     # characteristic length scales
 
     def lambda_eff(self, n_b: np.ndarray) -> np.ndarray:
@@ -234,3 +253,4 @@ class EquationOfState:
         lambda_eff = lambda_eff_fm * 1e-13
 
         return lambda_eff
+
