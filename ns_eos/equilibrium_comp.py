@@ -277,35 +277,28 @@ class EquationOfState:
     def k_F_n(self, n_b: np.ndarray) -> np.ndarray:
         """function calculates the neutron Fermi wave vector in 1/fm for a given baryon number density in 1/fm**3"""
 
-        k_F_n = (3 * np.pi ** 2 * n_b * (1 - self.x_p(n_b))) ** (1 / 3)
+        k_F_n = (3 * np.pi ** 2 * self.n_n(n_b)) ** (1 / 3)
 
         return k_F_n
 
     def k_F_p(self, n_b: np.ndarray) -> np.ndarray:
         """function calculates the proton Fermi wave vector in 1/fm for a given baryon number density in 1/fm**3"""
 
-        k_F_p = (3 * np.pi ** 2 * n_b * self.x_p(n_b)) ** (1 / 3)
+        k_F_p = (3 * np.pi ** 2 * self.n_p(n_b)) ** (1 / 3)
 
         return k_F_p
 
     # characteristic length scales
 
-    def lambda_eff(self, n_b: np.ndarray) -> np.ndarray:
-        """function calculates the effective London penetration depth in cm
-        for given baryon number density in 1/fm**3"""
+    def lambda_L(self, n_b: np.ndarray) -> np.ndarray:
+        """function calculates the London penetration depth in cm for given baryon number density in 1/fm**3"""
 
-        x_p = self.x_p(n_b)
-        m_eff_n = self.m_eff_n(n_b)
-        m_eff_p = self.m_eff_p(n_b)
-        lambda_eff_fm = (
+        lambda_L = (
             (m_u * c ** 2)
-            / (q ** 2 * 4 * np.pi * x_p * n_b)
-            * (m_eff_n + m_eff_p - m_u_cgs)
-            / m_eff_n
-        ) ** (1 / 2)
-        lambda_eff = lambda_eff_fm * fm
+            / (q ** 2 * 4 * np.pi * self.n_p(n_b))
+        ) ** (1 / 2) * fm
 
-        return lambda_eff
+        return lambda_L
 
     def xi_n(self, n_b: np.ndarray) -> np.ndarray:
         """function calculates the neutron coherence length in cm for given baryon number density in 1/fm**3"""
