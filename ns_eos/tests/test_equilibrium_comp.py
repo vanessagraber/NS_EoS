@@ -45,6 +45,8 @@ def test_case_3():
         "n_n": np.array([0.0961777]),
         "m_eff_n": np.array([1.64218807e-24]),
         "m_eff_p": np.array([1.19878858e-24]),
+        "k_F_n": np.array([1.417420]),
+        "k_F_p": np.array([0.483707]),
         "lambda_eff": np.array([9.839113e-12]),
     }
 
@@ -63,7 +65,9 @@ def test_case_4():
         "n_n": np.array([0.18568910]),
         "m_eff_n": np.array([1.60724175e-24]),
         "m_eff_p": np.array([9.68987117e-25]),
-        "lambda_eff": np.array([4.526990e-12])
+        "k_F_n": np.array([1.764964]),
+        "k_F_p": np.array([0.751097]),
+        "lambda_eff": np.array([4.526990e-12]),
     }
 
     return data
@@ -213,7 +217,35 @@ def test_m_eff_p_02(test_case_4):
     assert np.abs((m_eff_p - test_case_4["m_eff_p"]) / m_eff_p) < TOL
 
 
+# Fermi wave numbers
+
+
+def test_k_F_n_01(test_case_3):
+    """verifying that the neutron wave number is correctly calculated below muon threshold"""
+    k_F_n = test_case_3["eos"].k_F_n(test_case_3["n_b"])
+    assert np.abs((k_F_n - test_case_3["k_F_n"]) / k_F_n) < TOL
+
+
+def test_k_F_n_02(test_case_4):
+    """verifying that the neutron wave number is correctly calculated above muon threshold"""
+    k_F_n = test_case_4["eos"].k_F_n(test_case_4["n_b"])
+    assert np.abs((k_F_n - test_case_4["k_F_n"]) / k_F_n) < TOL
+
+
+def test_k_F_p_01(test_case_3):
+    """verifying that the proton wave number is correctly calculated below muon threshold"""
+    k_F_p = test_case_3["eos"].k_F_p(test_case_3["n_b"])
+    assert np.abs((k_F_p - test_case_3["k_F_p"]) / k_F_p) < TOL
+
+
+def test_k_F_p_02(test_case_4):
+    """verifying that the proton wave number is correctly calculated above muon threshold"""
+    k_F_p = test_case_4["eos"].k_F_p(test_case_4["n_b"])
+    assert np.abs((k_F_p - test_case_4["k_F_p"]) / k_F_p) < TOL
+
+
 # characteristic length scales
+
 
 def test_lambda_eff_01(test_case_3):
     """verifying that the London length is correctly calculated below muon threshold"""
