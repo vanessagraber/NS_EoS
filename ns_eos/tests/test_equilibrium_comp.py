@@ -81,9 +81,27 @@ def test_case_4():
     return data
 
 
+@pytest.fixture()
+def test_case_5():
+    data = {
+        "eos": ec.EquationOfState(),
+        "H": (85.006655, 322.612908, 218.840437),
+    }
+
+    return data
+
+
 def test_muon_eqn_const(test_case_1):
     """verifying the value of the constant affecting the muon appearance"""
     assert np.abs(ec.muon_eqn_const - test_case_1["muon_eqn_const"]) < TOL
+
+
+def test_H_parameters(test_case_5):
+    """verifying the H_i parameters are correctly calculated"""
+    H = test_case_5["eos"].H_parameters()
+    assert np.abs((H[0] - test_case_5["H"][0]) / H[0]) < TOL
+    assert np.abs((H[1] - test_case_5["H"][1]) / H[1]) < TOL
+    assert np.abs((H[2] - test_case_5["H"][2]) / H[1]) < TOL
 
 
 def test_relation_nmu_ne_01(test_case_1):

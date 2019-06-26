@@ -97,9 +97,13 @@ class EquationOfState:
         self.x3 = x3
         self.alpha = alpha
 
-        # adjusted parameters
+        # modified Skyrme parameters
         self.C_0_tau = 3 * self.t1 / 16 + 1 * self.t2 / 4 * (5 / 4 + self.x2)
         self.C_1_tau = -1 * self.t1 / 8 * (1 / 2 + self.x1) + 1 * self.t2 / 8 * (
+            1 / 2 + self.x2
+        )
+        self.C_0_Delta_n = -9 * self.t1 / 64 + 1 * self.t2 / 16 * (5 / 4 + self.x2)
+        self.C_1_Delta_n = 3 * self.t1 / 32 * (1 / 2 + self.x1) + 1 * self.t2 / 32 * (
             1 / 2 + self.x2
         )
 
@@ -114,6 +118,15 @@ class EquationOfState:
         B6 = -(self.t3 / 12) * (self.x3 + 1 / 2)
 
         return B1, B2, B3, B4, B5, B6
+
+    def H_parameters(self) -> Tuple[float, ...]:
+        """function calculates the three H_i parameters of the energy density functional"""
+
+        H_1 = self.C_0_tau - self.C_1_tau
+        H_2 = -4 * self.C_0_Delta_n + 4 * self.C_1_Delta_n
+        H_3 = self.C_0_tau + self.C_1_tau - 4 * self.C_0_Delta_n - 4 * self.C_1_Delta_n
+
+        return H_1, H_2, H_3
 
     def relative_chem_pot(self, n_b: float, n_p: float) -> float:
         """function determines the relative chemical potential in MeV of the protons and neutrons as a
