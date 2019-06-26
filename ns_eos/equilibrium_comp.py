@@ -17,6 +17,10 @@ m_u_cgs = 1.660539e-24  # atomic mass unit in g
 m_mu = 0.113429 * m_u  # muon mass unit in MeV s**2/fm**2
 q = 1.199985  # electric charge in (MeV fm)**1/2
 
+# unit conversion factors
+fm = 1e-13  # fm to cm
+MeV = 1e6 * 1.782662e-33 * (c * fm) ** 2  # MeV to g*cm**2/s**2
+
 # constant in units of 1/fm**2 related to the appearance of muon
 muon_eqn_const = m_mu ** 2 * c ** 2 / (hbar ** 2 * (3 * np.pi ** 2) ** (2 / 3))
 
@@ -92,6 +96,12 @@ class EquationOfState:
         self.x2 = x2
         self.x3 = x3
         self.alpha = alpha
+
+        # adjusted parameters
+        self.C_0_tau = 3 * self.t1 / 16 + 1 * self.t2 / 4 * (5 / 4 + self.x2)
+        self.C_1_tau = -1 * self.t1 / 8 * (1 / 2 + self.x1) + 1 * self.t2 / 8 * (
+            1 / 2 + self.x2
+        )
 
     def _parameters_hamiltonian(self) -> Tuple[float, ...]:
         """function calculates the parameters for the effective Skyrme Hamiltonian"""
@@ -197,7 +207,7 @@ class EquationOfState:
 
         return n_n
 
-    # effective masses
+    # dynamic effective masses caused by entrainment
 
     def m_eff_n(self, n_b: np.ndarray) -> np.ndarray:
         """function calculates the neutron effective mass in gram for a given baryon number density in 1/fm**3"""
@@ -218,6 +228,36 @@ class EquationOfState:
         m_eff_p = m_u_cgs * (1 + beta_3 * n_b * x_p) / (1 + beta_3 * n_b)
 
         return m_eff_p
+
+    # Landau effective masses characterising the static ground state
+
+    def m_eff_L_n(self, n_b: np.ndarray) -> np.ndarray:
+        """function calculates the neutron Landau effective mass in gram for a given baryon number density in 1/fm**3"""
+
+        m_eff_L_n = (
+            1 / m_u_cgs
+            + 2
+            / hbar ** 2
+            * fm ** 2
+            / MeV
+            * (n_b * (self.C_0_tau - self.C_1_tau) + 2 * self.n_n(n_b) * self.C_1_tau)
+        ) ** (-1)
+
+        return m_eff_L_n
+
+    def m_eff_L_p(self, n_b: np.ndarray) -> np.ndarray:
+        """function calculates the proton Landau effective mass in gram for a given baryon number density in 1/fm**3"""
+
+        m_eff_L_p = (
+            1 / m_u_cgs
+            + 2
+            / hbar ** 2
+            * fm ** 2
+            / MeV
+            * (n_b * (self.C_0_tau - self.C_1_tau) + 2 * self.n_p(n_b) * self.C_1_tau)
+        ) ** (-1)
+
+        return m_eff_L_p
 
     # Fermi wave numbers
 
@@ -253,4 +293,3 @@ class EquationOfState:
         lambda_eff = lambda_eff_fm * 1e-13
 
         return lambda_eff
-
