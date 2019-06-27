@@ -97,9 +97,13 @@ class EquationOfState:
         self.x3 = x3
         self.alpha = alpha
 
-        # adjusted parameters
+        # modified Skyrme parameters
         self.C_0_tau = 3 * self.t1 / 16 + 1 * self.t2 / 4 * (5 / 4 + self.x2)
         self.C_1_tau = -1 * self.t1 / 8 * (1 / 2 + self.x1) + 1 * self.t2 / 8 * (
+            1 / 2 + self.x2
+        )
+        self.C_0_Delta_n = -9 * self.t1 / 64 + 1 * self.t2 / 16 * (5 / 4 + self.x2)
+        self.C_1_Delta_n = 3 * self.t1 / 32 * (1 / 2 + self.x1) + 1 * self.t2 / 32 * (
             1 / 2 + self.x2
         )
 
@@ -114,6 +118,15 @@ class EquationOfState:
         B6 = -(self.t3 / 12) * (self.x3 + 1 / 2)
 
         return B1, B2, B3, B4, B5, B6
+
+    def H_parameters(self) -> Tuple[float, ...]:
+        """function calculates the three H_i parameters of the energy density functional"""
+
+        H_1 = self.C_0_tau - self.C_1_tau
+        H_2 = -4 * self.C_0_Delta_n + 4 * self.C_1_Delta_n
+        H_3 = self.C_0_tau + self.C_1_tau - 4 * self.C_0_Delta_n - 4 * self.C_1_Delta_n
+
+        return H_1, H_2, H_3
 
     def relative_chem_pot(self, n_b: float, n_p: float) -> float:
         """function determines the relative chemical potential in MeV of the protons and neutrons as a
@@ -264,35 +277,27 @@ class EquationOfState:
     def k_F_n(self, n_b: np.ndarray) -> np.ndarray:
         """function calculates the neutron Fermi wave vector in 1/fm for a given baryon number density in 1/fm**3"""
 
-        k_F_n = (3 * np.pi ** 2 * n_b * (1 - self.x_p(n_b))) ** (1 / 3)
+        k_F_n = (3 * np.pi ** 2 * self.n_n(n_b)) ** (1 / 3)
 
         return k_F_n
 
     def k_F_p(self, n_b: np.ndarray) -> np.ndarray:
         """function calculates the proton Fermi wave vector in 1/fm for a given baryon number density in 1/fm**3"""
 
-        k_F_p = (3 * np.pi ** 2 * n_b * self.x_p(n_b)) ** (1 / 3)
+        k_F_p = (3 * np.pi ** 2 * self.n_p(n_b)) ** (1 / 3)
 
         return k_F_p
 
     # characteristic length scales
 
-    def lambda_eff(self, n_b: np.ndarray) -> np.ndarray:
-        """function calculates the effective London penetration depth in cm
-        for given baryon number density in 1/fm**3"""
+    def lambda_L(self, n_b: np.ndarray) -> np.ndarray:
+        """function calculates the London penetration depth in cm for given baryon number density in 1/fm**3"""
 
-        x_p = self.x_p(n_b)
-        m_eff_n = self.m_eff_n(n_b)
-        m_eff_p = self.m_eff_p(n_b)
-        lambda_eff_fm = (
-            (m_u * c ** 2)
-            / (q ** 2 * 4 * np.pi * x_p * n_b)
-            * (m_eff_n + m_eff_p - m_u_cgs)
-            / m_eff_n
-        ) ** (1 / 2)
-        lambda_eff = lambda_eff_fm * fm
+        lambda_L = ((m_u * c ** 2) / (q ** 2 * 4 * np.pi * self.n_p(n_b))) ** (
+            1 / 2
+        ) * fm
 
-        return lambda_eff
+        return lambda_L
 
     def xi_n(self, n_b: np.ndarray) -> np.ndarray:
         """function calculates the neutron coherence length in cm for given baryon number density in 1/fm**3"""

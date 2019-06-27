@@ -3,6 +3,7 @@
 """
 
 from scipy.optimize import newton
+import numpy as np
 
 # fit parameters for the two superfluids
 proton_singlet = {"Delta_0": 120, "k_1": 0, "k_2": 9, "k_3": 1.3, "k_4": 1.8}
@@ -31,10 +32,10 @@ def gap_neutrons(k_F_n: float) -> float:
     limit_right = newton(gap_neutrons_full, 2.5)
 
     if k_F_n > limit_right:
-        return 0
+        return np.nan
     else:
         if k_F_n < limit_left:
-            return 0
+            return np.nan
         else:
             return gap_neutrons_full(k_F_n)
 
@@ -61,10 +62,9 @@ def gap_protons(k_F_p: float) -> float:
     limit_right = newton(gap_protons_full, 1.5)
 
     if k_F_p > limit_right:
-        return 0
+        return np.nan
     else:
         if k_F_p < limit_left:
-            return 0
+            return np.nan
         else:
             return gap_protons_full(k_F_p)
-

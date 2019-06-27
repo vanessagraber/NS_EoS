@@ -49,7 +49,7 @@ def test_case_3():
         "m_eff_L_p": np.array([1.189092e-24]),
         "k_F_n": np.array([1.417420]),
         "k_F_p": np.array([0.483707]),
-        "lambda_eff": np.array([9.839113e-12]),
+        "lambda": np.array([1.160505e-11]),
         "xi_n": np.array([2.050619e-10]),
         "xi_p": np.array([1.094111e-12]),
     }
@@ -73,9 +73,27 @@ def test_case_4():
         "m_eff_L_p": np.array([9.354640e-25]),
         "k_F_n": np.array([1.764964]),
         "k_F_p": np.array([0.751097]),
-        "lambda_eff": np.array([4.526990e-12]),
+        "lambda": np.array([5.997578e-12]),
         "xi_n": np.array([6.831531e-11]),
         "xi_p": np.array([1.747953e-12]),
+    }
+
+    return data
+
+
+@pytest.fixture()
+def test_case_5():
+    data = {"eos": ec.EquationOfState(), "H": (85.006655, 322.612908, 218.840437)}
+
+    return data
+
+
+@pytest.fixture()
+def test_case_6():
+    data = {
+        "eos": ec.EquationOfState(),
+        "n_b": np.array([0.6]),
+        "xi_n": np.array([np.nan]),
     }
 
     return data
@@ -84,6 +102,14 @@ def test_case_4():
 def test_muon_eqn_const(test_case_1):
     """verifying the value of the constant affecting the muon appearance"""
     assert np.abs(ec.muon_eqn_const - test_case_1["muon_eqn_const"]) < TOL
+
+
+def test_H_parameters(test_case_5):
+    """verifying the H_i parameters are correctly calculated"""
+    H = test_case_5["eos"].H_parameters()
+    assert np.abs((H[0] - test_case_5["H"][0]) / H[0]) < TOL
+    assert np.abs((H[1] - test_case_5["H"][1]) / H[1]) < TOL
+    assert np.abs((H[2] - test_case_5["H"][2]) / H[1]) < TOL
 
 
 def test_relation_nmu_ne_01(test_case_1):
@@ -282,16 +308,16 @@ def test_k_F_p_02(test_case_4):
 # characteristic length scales
 
 
-def test_lambda_eff_01(test_case_3):
+def test_lambda_L_01(test_case_3):
     """verifying that the London length is correctly calculated below muon threshold"""
-    lambda_eff = test_case_3["eos"].lambda_eff(test_case_3["n_b"])
-    assert np.abs((lambda_eff - test_case_3["lambda_eff"]) / lambda_eff) < TOL
+    lambda_L = test_case_3["eos"].lambda_L(test_case_3["n_b"])
+    assert np.abs((lambda_L - test_case_3["lambda"]) / lambda_L) < TOL
 
 
-def test_lambda_eff_02(test_case_4):
+def test_lambda_L_02(test_case_4):
     """verifying that the London length is correctly calculated above muon threshold"""
-    lambda_eff = test_case_4["eos"].lambda_eff(test_case_4["n_b"])
-    assert np.abs((lambda_eff - test_case_4["lambda_eff"]) / lambda_eff) < TOL
+    lambda_L = test_case_4["eos"].lambda_L(test_case_4["n_b"])
+    assert np.abs((lambda_L - test_case_4["lambda"]) / lambda_L) < TOL
 
 
 def test_xi_n_01(test_case_3):
@@ -304,6 +330,12 @@ def test_xi_n_02(test_case_4):
     """verifying that the neutron coherence length is correctly calculated above muon threshold"""
     xi_n = test_case_4["eos"].xi_n(test_case_4["n_b"])
     assert np.abs((xi_n - test_case_4["xi_n"]) / xi_n) < TOL
+
+
+def test_xi_n_03(test_case_6):
+    """verifying that the neutron coherence length is correctly calculated outside the gap range"""
+    xi_n = test_case_6["eos"].xi_n(test_case_6["n_b"])
+    np.testing.assert_array_equal(xi_n, test_case_6["xi_n"])
 
 
 def test_xi_p_01(test_case_3):
