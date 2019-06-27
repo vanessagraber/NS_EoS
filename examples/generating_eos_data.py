@@ -56,9 +56,9 @@ df_NRAPR = pd.DataFrame(
         "lambda_eff": lambda_NRAPR,
         "xi_n": xi_n_NRAPR,
         "xi_p": xi_p_NRAPR,
-        "kappa": lambda_NRAPR / xi_p_NRAPR,
-        "R": xi_p_NRAPR / xi_n_NRAPR,
-        "epsilon": n_p_NRAPR / n_n_NRAPR,
+        "kappa": lambda_NRAPR / xi_p_NRAPR,  # Ginzburg-Landau parameter
+        "R": xi_p_NRAPR / xi_n_NRAPR,  # coherence length ratio
+        "epsilon": n_p_NRAPR / n_n_NRAPR,  # asymmetry parameter
     }
 )
 
@@ -114,9 +114,9 @@ df_LNS = pd.DataFrame(
         "lambda_eff": lambda_LNS,
         "xi_n": xi_n_LNS,
         "xi_p": xi_p_LNS,
-        "kappa": lambda_LNS / xi_p_LNS,
-        "R": xi_p_LNS / xi_n_LNS,
-        "epsilon": n_p_LNS / n_n_LNS,
+        "kappa": lambda_LNS / xi_p_LNS,  # Ginzburg-Landau parameter
+        "R": xi_p_LNS / xi_n_LNS,  # coherence length ratio
+        "epsilon": n_p_LNS / n_n_LNS,  # asymmetry parameter
     }
 )
 
@@ -172,9 +172,9 @@ df_SLy4 = pd.DataFrame(
         "lambda": lambda_SLy4,
         "xi_n": xi_n_SLy4,
         "xi_p": xi_p_SLy4,
-        "kappa": lambda_SLy4 / xi_p_SLy4,
-        "R": xi_p_SLy4 / xi_n_SLy4,
-        "epsilon": n_p_SLy4 / n_n_SLy4,
+        "kappa": lambda_SLy4 / xi_p_SLy4,  # Ginzburg-Landau parameter
+        "R": xi_p_SLy4 / xi_n_SLy4,  # coherence length ratio
+        "epsilon": n_p_SLy4 / n_n_SLy4,  # asymmetry parameter
     }
 )
 
