@@ -83,9 +83,17 @@ def test_case_4():
 
 @pytest.fixture()
 def test_case_5():
+    data = {"eos": ec.EquationOfState(), "H": (85.006655, 322.612908, 218.840437)}
+
+    return data
+
+
+@pytest.fixture()
+def test_case_6():
     data = {
         "eos": ec.EquationOfState(),
-        "H": (85.006655, 322.612908, 218.840437),
+        "n_b": np.array([0.6]),
+        "xi_n": np.array([np.nan]),
     }
 
     return data
@@ -322,6 +330,12 @@ def test_xi_n_02(test_case_4):
     """verifying that the neutron coherence length is correctly calculated above muon threshold"""
     xi_n = test_case_4["eos"].xi_n(test_case_4["n_b"])
     assert np.abs((xi_n - test_case_4["xi_n"]) / xi_n) < TOL
+
+
+def test_xi_n_03(test_case_6):
+    """verifying that the neutron coherence length is correctly calculated outside the gap range"""
+    xi_n = test_case_6["eos"].xi_n(test_case_6["n_b"])
+    np.testing.assert_array_equal(xi_n, test_case_6["xi_n"])
 
 
 def test_xi_p_01(test_case_3):

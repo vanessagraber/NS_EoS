@@ -68,4 +68,3 @@ def gap_protons(k_F_p: float) -> float:
             return np.nan
         else:
             return gap_protons_full(k_F_p)
-

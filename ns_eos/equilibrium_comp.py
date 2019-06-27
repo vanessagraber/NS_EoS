@@ -293,10 +293,9 @@ class EquationOfState:
     def lambda_L(self, n_b: np.ndarray) -> np.ndarray:
         """function calculates the London penetration depth in cm for given baryon number density in 1/fm**3"""
 
-        lambda_L = (
-            (m_u * c ** 2)
-            / (q ** 2 * 4 * np.pi * self.n_p(n_b))
-        ) ** (1 / 2) * fm
+        lambda_L = ((m_u * c ** 2) / (q ** 2 * 4 * np.pi * self.n_p(n_b))) ** (
+            1 / 2
+        ) * fm
 
         return lambda_L
 
