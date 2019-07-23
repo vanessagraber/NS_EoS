@@ -27,15 +27,15 @@ rho_b = m_u_cgs * n_b / fm ** 3
 # ---- NRAPR EoS - parameters are taken from Steiner et al. (2005) ---- #
 
 eos_NRAPR = ec.EquationOfState(
-    t0=-2719.7,
+    t0=-2719.70,
     t1=417.64,
-    t2=-66.687,
-    t3=15042.0,
-    x0=0.16154,
-    x1=-0.047986,
-    x2=0.027170,
-    x3=0.13611,
-    alpha=0.14416,
+    t2=-66.69,
+    t3=15042.00,
+    x0=0.1615,
+    x1=-0.0480,
+    x2=0.0272,
+    x3=0.1361,
+    alpha=0.1442,
 )
 
 n_n_NRAPR = eos_NRAPR.n_n(n_b)
@@ -45,7 +45,7 @@ xi_n_NRAPR = eos_NRAPR.xi_n(n_b)
 xi_p_NRAPR = eos_NRAPR.xi_p(n_b)
 H_i_NRAPR = eos_NRAPR.H_parameters()
 
-print("H_i for NRAPR: ", H_i_NRAPR)
+print("H_i for NRAPR: ", [round(H, 2) for H in H_i_NRAPR])
 
 df_NRAPR = pd.DataFrame(
     {
@@ -86,14 +86,14 @@ df_NRAPR.to_csv("./examples/data/parameters_NRAPR.txt", index=False, header=True
 
 eos_LNS = ec.EquationOfState(
     t0=-2484.97,
-    t1=266.735,
-    t2=-337.135,
+    t1=266.74,
+    t2=-337.14,
     t3=14588.2,
-    x0=0.06277,
-    x1=0.65845,
-    x2=-0.95382,
-    x3=-0.03413,
-    alpha=0.16667,
+    x0=0.0623,
+    x1=0.6585,
+    x2=-0.9538,
+    x3=-0.0341,
+    alpha=1/6,
 )
 
 n_n_LNS = eos_LNS.n_n(n_b)
@@ -103,7 +103,7 @@ xi_n_LNS = eos_LNS.xi_n(n_b)
 xi_p_LNS = eos_LNS.xi_p(n_b)
 H_i_LNS = eos_LNS.H_parameters()
 
-print("H_i for LNS: ", H_i_LNS)
+print("H_i for LNS: ", [round(H, 2) for H in H_i_LNS])
 
 df_LNS = pd.DataFrame(
     {
@@ -151,7 +151,7 @@ eos_SLy4 = ec.EquationOfState(
     x1=-0.344,
     x2=-1,
     x3=1.354,
-    alpha=0.14416,
+    alpha=1/6,
 )
 
 n_n_SLy4 = eos_SLy4.n_n(n_b)
@@ -161,7 +161,7 @@ xi_n_SLy4 = eos_SLy4.xi_n(n_b)
 xi_p_SLy4 = eos_SLy4.xi_p(n_b)
 H_i_SLy4 = eos_SLy4.H_parameters()
 
-print("H_i for SLy4: ", H_i_SLy4)
+print("H_i for SLy4: ", [round(H, 2) for H in H_i_SLy4])
 
 df_SLy4 = pd.DataFrame(
     {
@@ -196,3 +196,119 @@ df_SLy4.columns = pd.MultiIndex.from_tuples(
     )
 )
 df_SLy4.to_csv("./examples/data/parameters_SLy4.txt", index=None, header=True)
+
+
+# ---- Ska35s20 - parameters are taken from Dutra et al. (2012) ---- #
+
+eos_Sk = ec.EquationOfState(
+    t0=-1768.8,
+    t1=263.9,
+    t2=-158.3,
+    t3=12904.8,
+    x0=0.13,
+    x1=-0.8,
+    x2=0.0,
+    x3=0.01,
+    alpha=0.35,
+)
+
+n_n_Sk = eos_Sk.n_n(n_b)
+n_p_Sk = eos_Sk.n_p(n_b)
+lambda_Sk = eos_Sk.lambda_L(n_b)
+xi_n_Sk = eos_Sk.xi_n(n_b)
+xi_p_Sk = eos_Sk.xi_p(n_b)
+H_i_Sk = eos_Sk.H_parameters()
+
+print("H_i for Ska35s20: ", [round(H, 2) for H in H_i_Sk])
+
+df_Sk = pd.DataFrame(
+    {
+        "n_b": n_b,
+        "rho_b": rho_b,
+        "n_n": n_n_Sk,
+        "n_p": n_p_Sk,
+        "lambda": lambda_Sk,
+        "xi_n": xi_n_Sk,
+        "xi_p": xi_p_Sk,
+        "kappa": lambda_Sk / xi_p_Sk,  # Ginzburg-Landau parameter
+        "R": xi_p_Sk / xi_n_Sk,  # coherence length ratio
+        "epsilon": n_p_Sk / n_n_Sk,  # asymmetry parameter
+    }
+)
+
+df_Sk.columns = pd.MultiIndex.from_tuples(
+    zip(
+        df_Sk.columns,
+        [
+            "[1/fm**3]",
+            "[g/cm**3]",
+            "[1/fm**3]",
+            "[1/fm**3]",
+            "[cm]",
+            "[cm]",
+            "[cm]",
+            "[]",
+            "[]",
+            "[]",
+        ],
+    )
+)
+df_Sk.to_csv("./examples/data/parameters_Ska35s20.txt", index=None, header=True)
+
+
+# ---- SQMC700 - parameters are taken from Guichon et al. (2006) ---- #
+
+eos_SQMC = ec.EquationOfState(
+    t0=-2429.1,
+    t1=371.0,
+    t2=-96.7,
+    t3=13773.6,
+    x0=0.10,
+    x1=0.0,
+    x2=0.0,
+    x3=0.0,
+    alpha=1/6,
+)
+
+n_n_SQMC = eos_SQMC.n_n(n_b)
+n_p_SQMC = eos_SQMC.n_p(n_b)
+lambda_SQMC = eos_SQMC.lambda_L(n_b)
+xi_n_SQMC = eos_SQMC.xi_n(n_b)
+xi_p_SQMC = eos_SQMC.xi_p(n_b)
+H_i_SQMC = eos_SQMC.H_parameters()
+
+print("H_i for SQMC: ", [round(H, 2) for H in H_i_SQMC])
+
+df_SQMC = pd.DataFrame(
+    {
+        "n_b": n_b,
+        "rho_b": rho_b,
+        "n_n": n_n_SQMC,
+        "n_p": n_p_SQMC,
+        "lambda": lambda_SQMC,
+        "xi_n": xi_n_SQMC,
+        "xi_p": xi_p_SQMC,
+        "kappa": lambda_SQMC / xi_p_SQMC,  # Ginzburg-Landau parameter
+        "R": xi_p_SQMC / xi_n_SQMC,  # coherence length ratio
+        "epsilon": n_p_SQMC / n_n_SQMC,  # asymmetry parameter
+    }
+)
+
+df_SQMC.columns = pd.MultiIndex.from_tuples(
+    zip(
+        df_SQMC.columns,
+        [
+            "[1/fm**3]",
+            "[g/cm**3]",
+            "[1/fm**3]",
+            "[1/fm**3]",
+            "[cm]",
+            "[cm]",
+            "[cm]",
+            "[]",
+            "[]",
+            "[]",
+        ],
+    )
+)
+df_SQMC.to_csv("./examples/data/parameters_SQMC700.txt", index=None, header=True)
