@@ -36,7 +36,7 @@ To see if the installation has been successful, we provide an example file. Runn
 ```
 $ python examples/generating_eos_data.py
 ```
-will create three .txt files for three different sample equations of states (NRAPR, SLy4 and LNS) 
+will create .txt files for five different sample equations of states (NRAPR, SLy4, LNS, SQMC700, Ska35s20) 
 in `examples/data/`, providing a range of parameters as a function of baryon density.
 
 Note that by default, an instance of the `EquationOfState` class will be created based on the Skyrme parameters 
