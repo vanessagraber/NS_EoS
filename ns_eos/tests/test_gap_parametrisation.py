@@ -15,14 +15,14 @@ def test_case_1():
 
 @pytest.fixture()
 def test_case_2():
-    data = {"k_F_n": 1.5, "k_F_p": 0.5, "Delta_n": 0.021607, "Delta_p": 0.850687}
+    data = {"k_F_n": 1.5, "k_F_p": 0.5, "Delta_n": 0.241528, "Delta_p": 0.824451}
 
     return data
 
 
 @pytest.fixture()
 def test_case_3():
-    data = {"k_F_n": 2.5, "k_F_p": 1.5, "Delta_n": np.nan, "Delta_p": np.nan}
+    data = {"k_F_n": 3.5, "k_F_p": 1.5, "Delta_n": np.nan, "Delta_p": np.nan}
 
     return data
 

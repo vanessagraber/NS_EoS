@@ -1,13 +1,13 @@
 """Calculation of the superfluid neutron and superconducting proton gap in the neutron star core following the
-    parametrisation introduced in Andersson et al. (2005) and used in Ho et al. (2012)
+    parametrisation introduced in Andersson et al. (2005) with the parameters given in Ho et al. (2015)
 """
 
 from scipy.optimize import newton
 import numpy as np
 
-# fit parameters for the two superfluids
-proton_singlet = {"Delta_0": 120, "k_1": 0, "k_2": 9, "k_3": 1.3, "k_4": 1.8}
-neutron_triplet = {"Delta_0": 0.068, "k_1": 1.28, "k_2": 0.1, "k_3": 2.37, "k_4": 0.02}
+# fit parameters for the two superfluids using the CCDK gap for the protons and the TToa gap for the neutrons
+proton_singlet = {"Delta_0": 102, "k_1": 0, "k_2": 9, "k_3": 1.3, "k_4": 1.5}
+neutron_triplet = {"Delta_0": 2.1, "k_1": 1.1, "k_2": 0.6, "k_3": 3.2, "k_4": 2.4}
 
 
 def gap_neutrons_full(k_F_n: float) -> float:
@@ -28,8 +28,8 @@ def gap_neutrons_full(k_F_n: float) -> float:
 def gap_neutrons(k_F_n: float) -> float:
     """function determines the neutron energy gap in MeV as a function of neutron Fermi number in 1/fm """
 
-    limit_left = newton(gap_neutrons_full, 1.5)
-    limit_right = newton(gap_neutrons_full, 2.5)
+    limit_left = newton(gap_neutrons_full, 1.1)
+    limit_right = newton(gap_neutrons_full, 3.5)
 
     if k_F_n > limit_right:
         return np.nan

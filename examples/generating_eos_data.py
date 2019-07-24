@@ -93,7 +93,7 @@ eos_LNS = ec.EquationOfState(
     x1=0.6585,
     x2=-0.9538,
     x3=-0.0341,
-    alpha=1/6,
+    alpha=1 / 6,
 )
 
 n_n_LNS = eos_LNS.n_n(n_b)
@@ -151,7 +151,7 @@ eos_SLy4 = ec.EquationOfState(
     x1=-0.344,
     x2=-1,
     x3=1.354,
-    alpha=1/6,
+    alpha=1 / 6,
 )
 
 n_n_SLy4 = eos_SLy4.n_n(n_b)
@@ -267,7 +267,7 @@ eos_SQMC = ec.EquationOfState(
     x1=0.0,
     x2=0.0,
     x3=0.0,
-    alpha=1/6,
+    alpha=1 / 6,
 )
 
 n_n_SQMC = eos_SQMC.n_n(n_b)

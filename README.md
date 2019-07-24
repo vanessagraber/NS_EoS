@@ -14,10 +14,10 @@ this provides number densities, particle fractions, Fermi wave numbers,
 Landau effective masses and dynamic effective masses related to entrainment 
 (see [Chammel and Haensel (2006)](https://journals.aps.org/prc/abstract/10.1103/PhysRevC.73.045802) 
 for details) for a given baryon density.
-To determine properties of the superfluids (London penetration depth and coherence lengths), 
-we employ parametrisations for the singlet proton and triplet neutron gap introduced in 
+To determine the properties of the superfluids (specifically their coherence lengths), 
+we employ the gap parametrisation introduced in 
 [Andersson et al. (2005)](https://www.sciencedirect.com/science/article/abs/pii/S0375947405010572?via%3Dihub) 
-(see also [Ho et al. (2012)](https://academic.oup.com/mnras/article/422/3/2632/1048899)). 
+with parameters for the singlet proton and triplet neutron gap given in [Ho et al. (2015)](https://journals.aps.org/prc/abstract/10.1103/PhysRevC.91.015806).
 Details of the gap calculation can be found in `ns_eos/gap_parametrisation.py`.
 
 

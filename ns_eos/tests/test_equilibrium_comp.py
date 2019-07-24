@@ -50,8 +50,8 @@ def test_case_3():
         "k_F_n": np.array([1.417420]),
         "k_F_p": np.array([0.483707]),
         "lambda": np.array([1.160505e-11]),
-        "xi_n": np.array([2.050619e-10]),
-        "xi_p": np.array([1.094111e-12]),
+        "xi_n": np.array([1.259872e-11]),
+        "xi_p": np.array([1.130619e-12]),
     }
 
     return data
@@ -74,8 +74,8 @@ def test_case_4():
         "k_F_n": np.array([1.764964]),
         "k_F_p": np.array([0.751097]),
         "lambda": np.array([5.997578e-12]),
-        "xi_n": np.array([6.831531e-11]),
-        "xi_p": np.array([1.747953e-12]),
+        "xi_n": np.array([7.511429e-12]),
+        "xi_p": np.array([1.762823e-12]),
     }
 
     return data
@@ -84,17 +84,6 @@ def test_case_4():
 @pytest.fixture()
 def test_case_5():
     data = {"eos": ec.EquationOfState(), "H": (85.006655, 322.612908, 218.840437)}
-
-    return data
-
-
-@pytest.fixture()
-def test_case_6():
-    data = {
-        "eos": ec.EquationOfState(),
-        "n_b": np.array([0.6]),
-        "xi_n": np.array([np.nan]),
-    }
 
     return data
 
@@ -330,12 +319,6 @@ def test_xi_n_02(test_case_4):
     """verifying that the neutron coherence length is correctly calculated above muon threshold"""
     xi_n = test_case_4["eos"].xi_n(test_case_4["n_b"])
     assert np.abs((xi_n - test_case_4["xi_n"]) / xi_n) < TOL
-
-
-def test_xi_n_03(test_case_6):
-    """verifying that the neutron coherence length is correctly calculated outside the gap range"""
-    xi_n = test_case_6["eos"].xi_n(test_case_6["n_b"])
-    np.testing.assert_array_equal(xi_n, test_case_6["xi_n"])
 
 
 def test_xi_p_01(test_case_3):
