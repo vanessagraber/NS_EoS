@@ -1,6 +1,6 @@
 """Calculation of the neutron star composition based on baryon conservation, charge neutrality, beta equilibrium
     and muon production rate for a given set of Skyrme parameters as done in Chamel (2008). The superfluid neutron and
-    superconducting proton gap in the neutron star core are based the parametrisation introduced in Andersson et al.
+    superconducting proton gap in the neutron star core are based on ithe parametrisation introduced in Andersson et al.
     (2005) with parameters from Ho et al. (2015).
 """
 
@@ -57,11 +57,14 @@ class EquationOfState:
         t1=417.64,
         t2=-66.687,
         t3=15042.0,
+        t4=0.0,
         x0=0.16154,
         x1=-0.047986,
         x2=0.027170,
         x3=0.13611,
-        alpha=0.14416,
+        x4=0.0,
+        sigma=0.14416,
+        sigma_2=0.0,
     ):
         """
         predefined parameters are for the NRAPR equation of state
@@ -74,6 +77,8 @@ class EquationOfState:
         :type t2: float
         :param t3: Skyrme parameter
         :type t3: float
+        :param t4: Skyrme parameter
+        :type t4: float
         :param x0: Skyrme parameter
         :type x0: float
         :param x1: Skyrme parameter
@@ -82,8 +87,12 @@ class EquationOfState:
         :type x2: float
         :param x3: Skyrme parameter
         :type x3: float
-        :param alpha: Skyrme parameter
-        :type alpha: float
+        :param x4: Skyrme parameter
+        :type x4: float
+        :param sigma: Skyrme parameter
+        :type sigma: float
+        :param sigma_2: Skyrme parameter
+        :type sigma_2: float
         """
 
         # Skyrme parameters
@@ -91,11 +100,14 @@ class EquationOfState:
         self.t1 = t1
         self.t2 = t2
         self.t3 = t3
+        self.t4 = t4
         self.x0 = x0
         self.x1 = x1
         self.x2 = x2
         self.x3 = x3
-        self.alpha = alpha
+        self.x4 = x4
+        self.sigma = sigma
+        self.sigma_2 = sigma_2
 
         # modified Skyrme parameters
         self.C_0_tau = 3 * self.t1 / 16 + 1 * self.t2 / 4 * (5 / 4 + self.x2)
@@ -116,8 +128,10 @@ class EquationOfState:
         B4 = -(1 / 4) * (self.t1 * (self.x1 + 1 / 2) - self.t2 * (self.x2 + 1 / 2))
         B5 = (self.t3 / 12) * (1 + self.x3 / 2)
         B6 = -(self.t3 / 12) * (self.x3 + 1 / 2)
+        B7 = (self.t4 / 12) * (1 + self.x4 / 2)
+        B8 = -(self.t4 / 12) * (self.x4 + 1 / 2)
 
-        return B1, B2, B3, B4, B5, B6
+        return B1, B2, B3, B4, B5, B6, B7, B8
 
     def H_parameters(self) -> Tuple[float, ...]:
         """function calculates the three H_i parameters of the energy density functional"""
@@ -138,7 +152,13 @@ class EquationOfState:
             (3 * np.pi ** 2) ** (2 / 3)
             * ((n_b - n_p) ** (2 / 3) - n_p ** (2 / 3))
             * (hbar ** 2 / (2 * m_u) + b_vector[2] * n_b)
-            + 2 * (n_b - 2 * n_p) * (b_vector[1] + b_vector[5] * n_b ** self.alpha)
+            + 2
+            * (n_b - 2 * n_p)
+            * (
+                b_vector[1]
+                + b_vector[5] * n_b ** self.sigma
+                + b_vector[7] * n_b ** self.sigma_2
+            )
             + (8 / 5)
             * (3 * np.pi ** 2) ** (2 / 3)
             * b_vector[3]
