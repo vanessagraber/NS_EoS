@@ -1,7 +1,7 @@
 # Neutron Star Parameters as a Function of Density
 
 This repository provides code that allows the calculation of relevant neutron star parameters as a function of density 
-for a given set of Skyrme parameters t<sub>0</sub>, t<sub>1</sub>, t<sub>2</sub>, t<sub>3</sub>, t<sub>4</sub>
+for a given set of Skyrme parameters t<sub>0</sub>, t<sub>1</sub>, t<sub>2</sub>, t<sub>3</sub>, t<sub>4</sub>,
 x<sub>0</sub>, x<sub>1</sub>, x<sub>2</sub>, x<sub>3</sub>, x<sub>4</sub>, &sigma;, and &sigma;<sub>2</sub>.
 
 ## Background Physics
@@ -41,7 +41,7 @@ in `examples/data/`, providing a range of parameters as a function of baryon den
 
 Note that by default, an instance of the `EquationOfState` class will be created based on the Skyrme parameters 
 of the NRAPR equation of state. If you would like to choose a different equation of state,
-specify the corresponding Skyrme parameters t<sub>0</sub>, t<sub>1</sub>, t<sub>2</sub>, t<sub>3</sub>, t<sub>4</sub>
+specify the corresponding Skyrme parameters t<sub>0</sub>, t<sub>1</sub>, t<sub>2</sub>, t<sub>3</sub>, t<sub>4</sub>,
 x<sub>0</sub>, x<sub>1</sub>, x<sub>2</sub>, x<sub>3</sub>, x<sub>4</sub>, &sigma;, and &sigma;<sub>2</sub>
  as shown in `examples/generating_eos_data.py`.
 

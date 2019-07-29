@@ -1,4 +1,5 @@
-"""Generating particle fractions and effective masses for several sets of equation of state parameters
+"""Generating number densities, particle fractions, characteristic lengthscales and dimensionless parameters
+for several sets of equation of state parameters as a function of neutron star density
 """
 
 import numpy as np
@@ -53,7 +54,7 @@ df_NRAPR = pd.DataFrame(
         "rho_b": rho_b,
         "n_n": n_n_NRAPR,
         "n_p": n_p_NRAPR,
-        "lambda_eff": lambda_NRAPR,
+        "lambda": lambda_NRAPR,
         "xi_n": xi_n_NRAPR,
         "xi_p": xi_p_NRAPR,
         "kappa": lambda_NRAPR / xi_p_NRAPR,  # Ginzburg-Landau parameter
@@ -111,7 +112,7 @@ df_LNS = pd.DataFrame(
         "rho_b": rho_b,
         "n_n": n_n_LNS,
         "n_p": n_p_LNS,
-        "lambda_eff": lambda_LNS,
+        "lambda": lambda_LNS,
         "xi_n": xi_n_LNS,
         "xi_p": xi_p_LNS,
         "kappa": lambda_LNS / xi_p_LNS,  # Ginzburg-Landau parameter
