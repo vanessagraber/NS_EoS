@@ -1,9 +1,10 @@
-"""Generating number densities, particle fractions, characteristic lengthscales and dimensionless parameters
+"""Generating number densities, particle fractions, energy gaps, characteristic lengthscales and dimensionless parameters
 for several sets of equation of state parameters as a function of neutron star density
 """
 
 import numpy as np
 import pandas as pd
+import ns_eos.gap_parametrisation as gp
 import ns_eos.equilibrium_comp as ec
 
 
@@ -19,10 +20,26 @@ q = 1.199985  # electric charge in (MeV fm)**1/2
 fm = 1e-13  # fm to cm
 MeV = 1e6 * 1.782662e-33 * (c * fm) ** 2  # MeV to g*cm**2/s**2
 
-
 # baryon number density and mass energy density in units of 1/fm**3 and g/cm**3, respectively
-n_b = np.arange(0.06, 0.6, 0.01)
+n_b = np.linspace(0.06, 0.6, 500)
 rho_b = m_u_cgs * n_b / fm ** 3
+
+# Fermi wave number to calculate the
+k_F = np.arange(0, 3.5, 0.01)
+
+# ---- Calculating the energy gaps as a function of k_F ---- #
+
+gap_protons = np.vectorize(gp.gap_protons)
+gap_neutrons = np.vectorize(gp.gap_neutrons)
+
+df_gaps = pd.DataFrame(
+    {"k_F": k_F, "Delta_p": gap_protons(k_F), "Delta_n": gap_neutrons(k_F)}
+)
+
+df_gaps.columns = pd.MultiIndex.from_tuples(
+    zip(df_gaps.columns, ["[1/fm]", "[MeV]", "[MeV]"])
+)
+df_gaps.to_csv("./examples/data/energy_gaps.txt", index=False, header=True)
 
 
 # ---- NRAPR EoS - parameters are taken from Steiner et al. (2005) ---- #
@@ -41,6 +58,10 @@ eos_NRAPR = ec.EquationOfState(
 
 n_n_NRAPR = eos_NRAPR.n_n(n_b)
 n_p_NRAPR = eos_NRAPR.n_p(n_b)
+k_n_NRAPR = eos_NRAPR.k_F_n(n_b)
+k_p_NRAPR = eos_NRAPR.k_F_p(n_b)
+Delta_n_NRAPR = gap_neutrons(k_n_NRAPR)
+Delta_p_NRAPR = gap_protons(k_p_NRAPR)
 lambda_NRAPR = eos_NRAPR.lambda_L(n_b)
 xi_n_NRAPR = eos_NRAPR.xi_n(n_b)
 xi_p_NRAPR = eos_NRAPR.xi_p(n_b)
@@ -54,6 +75,8 @@ df_NRAPR = pd.DataFrame(
         "rho_b": rho_b,
         "n_n": n_n_NRAPR,
         "n_p": n_p_NRAPR,
+        "Delta_n": Delta_n_NRAPR,
+        "Delta_p": Delta_p_NRAPR,
         "lambda": lambda_NRAPR,
         "xi_n": xi_n_NRAPR,
         "xi_p": xi_p_NRAPR,
@@ -71,6 +94,8 @@ df_NRAPR.columns = pd.MultiIndex.from_tuples(
             "[g/cm**3]",
             "[1/fm**3]",
             "[1/fm**3]",
+            "[MeV]",
+            "[MeV]",
             "[cm]",
             "[cm]",
             "[cm]",
@@ -157,6 +182,10 @@ eos_SLy4 = ec.EquationOfState(
 
 n_n_SLy4 = eos_SLy4.n_n(n_b)
 n_p_SLy4 = eos_SLy4.n_p(n_b)
+k_n_SLy4 = eos_SLy4.k_F_n(n_b)
+k_p_SLy4 = eos_SLy4.k_F_p(n_b)
+Delta_n_SLy4 = gap_neutrons(k_n_SLy4)
+Delta_p_SLy4 = gap_protons(k_p_SLy4)
 lambda_SLy4 = eos_SLy4.lambda_L(n_b)
 xi_n_SLy4 = eos_SLy4.xi_n(n_b)
 xi_p_SLy4 = eos_SLy4.xi_p(n_b)
@@ -170,6 +199,8 @@ df_SLy4 = pd.DataFrame(
         "rho_b": rho_b,
         "n_n": n_n_SLy4,
         "n_p": n_p_SLy4,
+        "Delta_n": Delta_n_SLy4,
+        "Delta_p": Delta_p_SLy4,
         "lambda": lambda_SLy4,
         "xi_n": xi_n_SLy4,
         "xi_p": xi_p_SLy4,
@@ -187,6 +218,8 @@ df_SLy4.columns = pd.MultiIndex.from_tuples(
             "[g/cm**3]",
             "[1/fm**3]",
             "[1/fm**3]",
+            "[MeV]",
+            "[MeV]",
             "[cm]",
             "[cm]",
             "[cm]",
@@ -334,6 +367,10 @@ eos_Skchi450 = ec.EquationOfState(
 
 n_n_Skchi450 = eos_Skchi450.n_n(n_b)
 n_p_Skchi450 = eos_Skchi450.n_p(n_b)
+k_n_Skchi450 = eos_Skchi450.k_F_n(n_b)
+k_p_Skchi450 = eos_Skchi450.k_F_p(n_b)
+Delta_n_Skchi450 = gap_neutrons(k_n_Skchi450)
+Delta_p_Skchi450 = gap_protons(k_p_Skchi450)
 lambda_Skchi450 = eos_Skchi450.lambda_L(n_b)
 xi_n_Skchi450 = eos_Skchi450.xi_n(n_b)
 xi_p_Skchi450 = eos_Skchi450.xi_p(n_b)
@@ -347,6 +384,8 @@ df_Skchi450 = pd.DataFrame(
         "rho_b": rho_b,
         "n_n": n_n_Skchi450,
         "n_p": n_p_Skchi450,
+        "Delta_n": Delta_n_Skchi450,
+        "Delta_p": Delta_p_Skchi450,
         "lambda": lambda_Skchi450,
         "xi_n": xi_n_Skchi450,
         "xi_p": xi_p_Skchi450,
@@ -364,6 +403,8 @@ df_Skchi450.columns = pd.MultiIndex.from_tuples(
             "[g/cm**3]",
             "[1/fm**3]",
             "[1/fm**3]",
+            "[MeV]",
+            "[MeV]",
             "[cm]",
             "[cm]",
             "[cm]",
