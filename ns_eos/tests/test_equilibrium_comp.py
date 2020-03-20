@@ -1,3 +1,13 @@
+"""
+Tests for the functions in equilibrium_comp.py.
+
+Authors:
+
+        Vanessa Graber (graber@ice.csic.es)
+
+    Copyright (c) Vanessa Graber
+"""
+
 import ns_eos.equilibrium_comp as ec
 import numpy as np
 import pytest

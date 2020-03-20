@@ -1,5 +1,13 @@
-"""Generating number densities, particle fractions, energy gaps, characteristic lengthscales and dimensionless parameters
-for several sets of equation of state parameters as a function of neutron star density
+"""
+Generating number densities, particle fractions, energy gaps, characteristic
+length scales and dimensionless parameters for several sets of equation of state
+parameters as a function of neutron star density
+
+Authors:
+
+        Vanessa Graber (graber@ice.csic.es)
+
+    Copyright (c) Vanessa Graber
 """
 
 import numpy as np
@@ -67,7 +75,7 @@ xi_n_NRAPR = eos_NRAPR.xi_n(n_b)
 xi_p_NRAPR = eos_NRAPR.xi_p(n_b)
 H_i_NRAPR = eos_NRAPR.H_parameters()
 
-print("H_i for NRAPR: ", [round(H, 2) for H in H_i_NRAPR])
+print("H_i for NRAPR: ", [round(H, 3) for H in H_i_NRAPR])
 
 df_NRAPR = pd.DataFrame(
     {
@@ -129,7 +137,7 @@ xi_n_LNS = eos_LNS.xi_n(n_b)
 xi_p_LNS = eos_LNS.xi_p(n_b)
 H_i_LNS = eos_LNS.H_parameters()
 
-print("H_i for LNS: ", [round(H, 2) for H in H_i_LNS])
+print("H_i for LNS: ", [round(H, 3) for H in H_i_LNS])
 
 df_LNS = pd.DataFrame(
     {
@@ -191,7 +199,7 @@ xi_n_SLy4 = eos_SLy4.xi_n(n_b)
 xi_p_SLy4 = eos_SLy4.xi_p(n_b)
 H_i_SLy4 = eos_SLy4.H_parameters()
 
-print("H_i for SLy4: ", [round(H, 2) for H in H_i_SLy4])
+print("H_i for SLy4: ", [round(H, 3) for H in H_i_SLy4])
 
 df_SLy4 = pd.DataFrame(
     {
@@ -253,7 +261,7 @@ xi_n_Sk = eos_Sk.xi_n(n_b)
 xi_p_Sk = eos_Sk.xi_p(n_b)
 H_i_Sk = eos_Sk.H_parameters()
 
-print("H_i for Ska35s20: ", [round(H, 2) for H in H_i_Sk])
+print("H_i for Ska35s20: ", [round(H, 3) for H in H_i_Sk])
 
 df_Sk = pd.DataFrame(
     {
@@ -311,7 +319,7 @@ xi_n_SQMC = eos_SQMC.xi_n(n_b)
 xi_p_SQMC = eos_SQMC.xi_p(n_b)
 H_i_SQMC = eos_SQMC.H_parameters()
 
-print("H_i for SQMC700: ", [round(H, 2) for H in H_i_SQMC])
+print("H_i for SQMC700: ", [round(H, 3) for H in H_i_SQMC])
 
 df_SQMC = pd.DataFrame(
     {
@@ -376,7 +384,7 @@ xi_n_Skchi450 = eos_Skchi450.xi_n(n_b)
 xi_p_Skchi450 = eos_Skchi450.xi_p(n_b)
 H_i_Skchi450 = eos_Skchi450.H_parameters()
 
-print("H_i for Skchi450: ", [round(H, 2) for H in H_i_Skchi450])
+print("H_i for Skchi450: ", [round(H, 3) for H in H_i_Skchi450])
 
 df_Skchi450 = pd.DataFrame(
     {

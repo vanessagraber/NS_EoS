@@ -1,5 +1,13 @@
-"""Calculation of the superfluid neutron and superconducting proton gap in the neutron star core following the
-    parametrisation introduced in Andersson et al. (2005) with the parameters given in Ho et al. (2015)
+"""
+Calculation of the superfluid neutron and superconducting proton gap
+in the neutron star core following the parametrisation introduced in
+Andersson et al. (2005) with the parameters given in Ho et al. (2015)
+
+Authors:
+
+        Vanessa Graber (graber@ice.csic.es)
+
+    Copyright (c) Vanessa Graber
 """
 
 from scipy.optimize import newton

@@ -1,3 +1,13 @@
+"""
+Tests for the functions in gap_parametrisation.py.
+
+Authors:
+
+        Vanessa Graber (graber@ice.csic.es)
+
+    Copyright (c) Vanessa Graber
+"""
+
 import ns_eos.gap_parametrisation as gp
 import numpy as np
 import pytest

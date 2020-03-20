@@ -1,7 +1,16 @@
-"""Calculation of the neutron star composition based on baryon conservation, charge neutrality, beta equilibrium
-    and muon production rate for a given set of Skyrme parameters as done in Chamel (2008). The superfluid neutron and
-    superconducting proton gap in the neutron star core are based on the parametrisation introduced in Andersson et al.
-    (2005) with parameters from Ho et al. (2015).
+"""
+Calculation of the neutron star composition based on baryon conservation,
+charge neutrality, beta equilibrium and muon production rate for a given
+set of Skyrme parameters as done in Chamel (2008). The superfluid neutron
+and superconducting proton gap in the neutron star core are based on the
+parametrisation introduced in Andersson et al. (2005) with parameters from
+Ho et al. (2015).
+
+Authors:
+
+        Vanessa Graber (graber@ice.csic.es)
+
+    Copyright (c) Vanessa Graber
 """
 
 import numpy as np
