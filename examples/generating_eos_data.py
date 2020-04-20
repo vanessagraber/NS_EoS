@@ -1,7 +1,7 @@
 """
 Generating number densities, particle fractions, energy gaps, characteristic
-length scales and dimensionless parameters for several sets of equation of state
-parameters as a function of neutron star density
+length scales and dimensionless parameters for several sets of equation of
+state parameters as a function of neutron star density
 
 Authors:
 
@@ -28,7 +28,7 @@ q = 1.199985  # electric charge in (MeV fm)**1/2
 fm = 1e-13  # fm to cm
 MeV = 1e6 * 1.782662e-33 * (c * fm) ** 2  # MeV to g*cm**2/s**2
 
-# baryon number density and mass energy density in units of 1/fm**3 and g/cm**3, respectively
+# baryon number density and mass energy density in units of 1/fm**3 and g/cm**3
 n_b = np.linspace(0.06, 0.6, 500)
 rho_b = m_u_cgs * n_b / fm ** 3
 

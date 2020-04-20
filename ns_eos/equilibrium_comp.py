@@ -157,8 +157,10 @@ class EquationOfState:
         """
 
         H_1 = self.C_0_tau - self.C_1_tau
-        H_2 = -4 * self.C_0_Delta_n + 4 * self.C_1_Delta_n
-        H_3 = self.C_0_tau + self.C_1_tau - 4 * self.C_0_Delta_n - 4 * self.C_1_Delta_n
+        H_2 = -16 * self.C_0_Delta_n + 16 * self.C_1_Delta_n
+        H_3 = (
+            self.C_0_tau + self.C_1_tau - 16 * self.C_0_Delta_n - 16 * self.C_1_Delta_n
+        )
 
         return H_1, H_2, H_3
 
