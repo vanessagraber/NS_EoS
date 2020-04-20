@@ -55,13 +55,13 @@ df_gaps.to_csv("./examples/data/energy_gaps.txt", index=False, header=True)
 eos_NRAPR = ec.EquationOfState(
     t0=-2719.70,
     t1=417.64,
-    t2=-66.69,
+    t2=-66.687,
     t3=15042.00,
-    x0=0.1615,
-    x1=-0.0480,
-    x2=0.0272,
-    x3=0.1361,
-    sigma=0.1442,
+    x0=0.16154,
+    x1=-0.047986,
+    x2=0.027170,
+    x3=0.13611,
+    sigma=0.14416,
 )
 
 n_n_NRAPR = eos_NRAPR.n_n(n_b)
