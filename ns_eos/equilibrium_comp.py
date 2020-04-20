@@ -35,8 +35,11 @@ muon_eqn_const = m_mu ** 2 * c ** 2 / (hbar ** 2 * (3 * np.pi ** 2) ** (2 / 3))
 
 
 def relation_nmu_ne(n_e: float) -> float:
-    """function relates the muon number density in 1/fm**3 to a given electron number density in 1/fm**3;
-    calculated from the equality of the muon and electron chemical potentials"""
+    """
+    function relates the muon number density in 1/fm**3 to a given
+    electron number density in 1/fm**3; calculated from the equality of
+    the muon and electron chemical potentials
+    """
 
     # for low electron number densities, no muons are present
     if n_e < muon_eqn_const ** (3 / 2):
@@ -48,8 +51,11 @@ def relation_nmu_ne(n_e: float) -> float:
 
 
 def relation_np_ne(n_e: float) -> float:
-    """function calculates the proton number density in 1/fm**3 for a given electron number density in 1/fm**3;
-    obtained from the charge neutrality condition"""
+    """
+    function calculates the proton number density in 1/fm**3 for a
+    given electron number density in 1/fm**3; obtained from the charge
+    neutrality condition
+    """
 
     # below first appearance of muons, electron and proton number density are equivalent
     if n_e < muon_eqn_const ** (3 / 2):
@@ -129,7 +135,9 @@ class EquationOfState:
         )
 
     def _parameters_hamiltonian(self) -> Tuple[float, ...]:
-        """function calculates the parameters for the effective Skyrme Hamiltonian"""
+        """
+        function calculates the parameters for the effective Skyrme Hamiltonian
+        """
 
         B1 = (self.t0 / 2) * (1 + self.x0 / 2)
         B2 = -(self.t0 / 2) * (self.x0 + 1 / 2)
@@ -143,7 +151,10 @@ class EquationOfState:
         return B1, B2, B3, B4, B5, B6, B7, B8
 
     def H_parameters(self) -> Tuple[float, ...]:
-        """function calculates the three H_i parameters of the energy density functional"""
+        """
+        function calculates the three H_i parameters of the energy
+        density functional
+        """
 
         H_1 = self.C_0_tau - self.C_1_tau
         H_2 = -4 * self.C_0_Delta_n + 4 * self.C_1_Delta_n
@@ -152,8 +163,11 @@ class EquationOfState:
         return H_1, H_2, H_3
 
     def relative_chem_pot(self, n_b: float, n_p: float) -> float:
-        """function determines the relative chemical potential in MeV of the protons and neutrons as a
-        function of baryon and proton number densities (in 1/fm**3) using the parameters of the Skyrme Hamiltonian"""
+        """
+        function determines the relative chemical potential in MeV of the
+        protons and neutrons as a function of baryon and proton number
+        densities (in 1/fm**3) using the parameters of the Skyrme Hamiltonian
+        """
 
         b_vector = self._parameters_hamiltonian()
 
@@ -176,8 +190,11 @@ class EquationOfState:
         return del_mu
 
     def func_to_minimize(self, n_e: float, n_b: float) -> float:
-        """based on beta equilibrium, the function equates the relative nucleon chemical potentials
-         with the electron chemical potential for given electron and baryon number density in 1/fm**3"""
+        """
+        based on beta equilibrium, the function equates the relative
+        nucleon chemical potentials with the electron chemical potential
+        for given electron and baryon number density in 1/fm**3
+        """
 
         n_p = relation_np_ne(n_e)
         del_mu = self.relative_chem_pot(n_b, n_p)
@@ -188,15 +205,20 @@ class EquationOfState:
         return func_min
 
     def _relation_ne_nb(self, n_b: float) -> float:
-        """function solves for the electron number density in 1/fm**3 for any given baryon number density in 1/fm**3"""
+        """
+        function solves for the electron number density in 1/fm**3 for
+        any given baryon number density in 1/fm**3
+        """
 
         output = newton(self.func_to_minimize, 0.001, args=(n_b,))
 
         return output
 
     def relation_ne_nb(self, n_b: np.ndarray) -> np.ndarray:
-        """function takes a numpy array of baryon number densities in 1/fm**3
-        and calculates the electron number density in 1/fm**3"""
+        """
+        function takes a numpy array of baryon number densities in 1/fm**3
+        and calculates the electron number density in 1/fm**3
+        """
 
         vect_func = np.vectorize(self._relation_ne_nb)
 
@@ -207,7 +229,10 @@ class EquationOfState:
     # particle fractions
 
     def x_e(self, n_b: np.ndarray) -> np.ndarray:
-        """function calculates the electron fraction for any given baryon number density in 1/fm**3"""
+        """
+        function calculates the electron fraction for any given
+        baryon number density in 1/fm**3
+        """
 
         n_e = self.relation_ne_nb(n_b)
         x_e = n_e / n_b
@@ -215,7 +240,10 @@ class EquationOfState:
         return x_e
 
     def x_p(self, n_b: np.ndarray) -> np.ndarray:
-        """function calculates the proton fraction for any given baryon number density in 1/fm**3"""
+        """
+        function calculates the proton fraction for any given
+        baryon number density in 1/fm**3
+        """
 
         n_e = self.relation_ne_nb(n_b)
         vect_func = np.vectorize(relation_np_ne)
@@ -224,7 +252,10 @@ class EquationOfState:
         return x_p
 
     def x_mu(self, n_b: np.ndarray) -> np.ndarray:
-        """function calculates the muon fraction for any given baryon number density in 1/fm**3"""
+        """
+        function calculates the muon fraction for any given baryon
+        number density in 1/fm**3
+        """
 
         n_e = self.relation_ne_nb(n_b)
         vect_func = np.vectorize(relation_nmu_ne)
@@ -235,7 +266,10 @@ class EquationOfState:
     # number densities
 
     def n_p(self, n_b: np.ndarray) -> np.ndarray:
-        """function calculates the proton number density in 1/fm**3 for any given baryon number density in 1/fm**3"""
+        """
+        function calculates the proton number density in 1/fm**3
+        for any given baryon number density in 1/fm**3
+        """
 
         x_p = self.x_p(n_b)
         n_p = n_b * x_p
@@ -243,7 +277,10 @@ class EquationOfState:
         return n_p
 
     def n_n(self, n_b: np.ndarray) -> np.ndarray:
-        """function calculates the neutron number density in 1/fm**3 for any given baryon number density in 1/fm**3"""
+        """
+        function calculates the neutron number density in 1/fm**3
+        for any given baryon number density in 1/fm**3
+        """
 
         n_n = n_b - self.n_p(n_b)
 
@@ -252,7 +289,10 @@ class EquationOfState:
     # dynamic effective masses caused by entrainment
 
     def m_eff_n(self, n_b: np.ndarray) -> np.ndarray:
-        """function calculates the neutron effective mass in gram for a given baryon number density in 1/fm**3"""
+        """
+        function calculates the neutron effective mass in gram for a
+        given baryon number density in 1/fm**3
+        """
 
         B3 = self._parameters_hamiltonian()[2]
         beta_3 = (2 * m_u * B3) / (hbar ** 2)
@@ -262,7 +302,10 @@ class EquationOfState:
         return m_eff_n
 
     def m_eff_p(self, n_b: np.ndarray) -> np.ndarray:
-        """function calculates the proton effective mass in gram for a given baryon number density in 1/fm**3"""
+        """
+        function calculates the proton effective mass in gram for a
+         baryon number density in 1/fm**3
+         """
 
         B3 = self._parameters_hamiltonian()[2]
         beta_3 = (2 * m_u * B3) / (hbar ** 2)
@@ -274,7 +317,10 @@ class EquationOfState:
     # Landau effective masses characterising the static ground state
 
     def m_eff_L_n(self, n_b: np.ndarray) -> np.ndarray:
-        """function calculates the neutron Landau effective mass in gram for a given baryon number density in 1/fm**3"""
+        """
+        function calculates the neutron Landau effective mass in gram
+        for a given baryon number density in 1/fm**3
+        """
 
         m_eff_L_n = (
             1 / m_u_cgs
@@ -288,7 +334,10 @@ class EquationOfState:
         return m_eff_L_n
 
     def m_eff_L_p(self, n_b: np.ndarray) -> np.ndarray:
-        """function calculates the proton Landau effective mass in gram for a given baryon number density in 1/fm**3"""
+        """
+        function calculates the proton Landau effective mass in gram
+        for a given baryon number density in 1/fm**3
+        """
 
         m_eff_L_p = (
             1 / m_u_cgs
@@ -304,14 +353,20 @@ class EquationOfState:
     # Fermi wave numbers
 
     def k_F_n(self, n_b: np.ndarray) -> np.ndarray:
-        """function calculates the neutron Fermi wave vector in 1/fm for a given baryon number density in 1/fm**3"""
+        """
+        function calculates the neutron Fermi wave vector in 1/fm for a
+        given baryon number density in 1/fm**3
+        """
 
         k_F_n = (3 * np.pi ** 2 * self.n_n(n_b)) ** (1 / 3)
 
         return k_F_n
 
     def k_F_p(self, n_b: np.ndarray) -> np.ndarray:
-        """function calculates the proton Fermi wave vector in 1/fm for a given baryon number density in 1/fm**3"""
+        """
+        function calculates the proton Fermi wave vector in 1/fm for a
+        given baryon number density in 1/fm**3
+        """
 
         k_F_p = (3 * np.pi ** 2 * self.n_p(n_b)) ** (1 / 3)
 
@@ -320,7 +375,10 @@ class EquationOfState:
     # characteristic length scales
 
     def lambda_L(self, n_b: np.ndarray) -> np.ndarray:
-        """function calculates the London penetration depth in cm for given baryon number density in 1/fm**3"""
+        """
+        function calculates the London penetration depth in cm for a
+        given baryon number density in 1/fm**3
+        """
 
         lambda_L = ((m_u * c ** 2) / (q ** 2 * 4 * np.pi * self.n_p(n_b))) ** (
             1 / 2
@@ -329,7 +387,10 @@ class EquationOfState:
         return lambda_L
 
     def xi_n(self, n_b: np.ndarray) -> np.ndarray:
-        """function calculates the neutron coherence length in cm for given baryon number density in 1/fm**3"""
+        """
+        function calculates the neutron coherence length in cm for a
+        given baryon number density in 1/fm**3
+        """
 
         v_F_n = hbar * self.k_F_n(n_b) / self.m_eff_L_n(n_b) * MeV / fm
         vect_func = np.vectorize(gp.gap_neutrons)
@@ -339,7 +400,10 @@ class EquationOfState:
         return xi_n
 
     def xi_p(self, n_b: np.ndarray) -> np.ndarray:
-        """function calculates the proton coherence length in cm for given baryon number density in 1/fm**3"""
+        """
+        function calculates the proton coherence length in cm for a
+        given baryon number density in 1/fm**3
+        """
 
         v_F_p = hbar * self.k_F_p(n_b) / self.m_eff_L_p(n_b) * MeV / fm
         vect_func = np.vectorize(gp.gap_protons)
