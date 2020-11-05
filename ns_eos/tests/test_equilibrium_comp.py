@@ -93,7 +93,7 @@ def test_case_4():
 
 @pytest.fixture()
 def test_case_5():
-    data = {"eos": ec.EquationOfState(), "H": (85.006655, 1290.451633, 788.292665)}
+    data = {"eos": ec.EquationOfState(), "H": (85.006655, 322.612908, 218.840437)}
 
     return data
 
