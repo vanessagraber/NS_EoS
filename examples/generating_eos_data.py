@@ -73,6 +73,8 @@ Delta_p_NRAPR = gap_protons(k_p_NRAPR)
 lambda_NRAPR = eos_NRAPR.lambda_L(n_b)
 xi_n_NRAPR = eos_NRAPR.xi_n(n_b)
 xi_p_NRAPR = eos_NRAPR.xi_p(n_b)
+meff_relL_n_NRAPR = eos_NRAPR.m_eff_L_n(n_b) / m_u_cgs
+meff_relL_p_NRAPR = eos_NRAPR.m_eff_L_p(n_b) / m_u_cgs
 H_i_NRAPR = eos_NRAPR.H_parameters()
 
 print("H_i for NRAPR: ", [round(H, 3) for H in H_i_NRAPR])
@@ -91,6 +93,8 @@ df_NRAPR = pd.DataFrame(
         "kappa": lambda_NRAPR / xi_p_NRAPR,  # Ginzburg-Landau parameter
         "R": xi_p_NRAPR / xi_n_NRAPR,  # coherence length ratio
         "epsilon": n_p_NRAPR / n_n_NRAPR,  # asymmetry parameter
+        "m_eff_relL_n": meff_relL_n_NRAPR,
+        "m_eff_relL_p": meff_relL_p_NRAPR
     }
 )
 
@@ -107,6 +111,8 @@ df_NRAPR.columns = pd.MultiIndex.from_tuples(
             "[cm]",
             "[cm]",
             "[cm]",
+            "[]",
+            "[]",
             "[]",
             "[]",
             "[]",
@@ -135,6 +141,8 @@ n_p_LNS = eos_LNS.n_p(n_b)
 lambda_LNS = eos_LNS.lambda_L(n_b)
 xi_n_LNS = eos_LNS.xi_n(n_b)
 xi_p_LNS = eos_LNS.xi_p(n_b)
+meff_relL_n_LNS = eos_LNS.m_eff_L_n(n_b) / m_u_cgs
+meff_relL_p_LNS = eos_LNS.m_eff_L_p(n_b) / m_u_cgs
 H_i_LNS = eos_LNS.H_parameters()
 
 print("H_i for LNS: ", [round(H, 3) for H in H_i_LNS])
@@ -151,6 +159,8 @@ df_LNS = pd.DataFrame(
         "kappa": lambda_LNS / xi_p_LNS,  # Ginzburg-Landau parameter
         "R": xi_p_LNS / xi_n_LNS,  # coherence length ratio
         "epsilon": n_p_LNS / n_n_LNS,  # asymmetry parameter
+        "m_eff_relL_n": meff_relL_n_LNS,
+        "m_eff_relL_p": meff_relL_p_LNS
     }
 )
 
@@ -165,6 +175,8 @@ df_LNS.columns = pd.MultiIndex.from_tuples(
             "[cm]",
             "[cm]",
             "[cm]",
+            "[]",
+            "[]",
             "[]",
             "[]",
             "[]",
@@ -197,6 +209,8 @@ Delta_p_SLy4 = gap_protons(k_p_SLy4)
 lambda_SLy4 = eos_SLy4.lambda_L(n_b)
 xi_n_SLy4 = eos_SLy4.xi_n(n_b)
 xi_p_SLy4 = eos_SLy4.xi_p(n_b)
+meff_relL_n_SLy4 = eos_SLy4.m_eff_L_n(n_b) / m_u_cgs
+meff_relL_p_SLy4 = eos_SLy4.m_eff_L_p(n_b) / m_u_cgs
 H_i_SLy4 = eos_SLy4.H_parameters()
 
 print("H_i for SLy4: ", [round(H, 3) for H in H_i_SLy4])
@@ -215,6 +229,8 @@ df_SLy4 = pd.DataFrame(
         "kappa": lambda_SLy4 / xi_p_SLy4,  # Ginzburg-Landau parameter
         "R": xi_p_SLy4 / xi_n_SLy4,  # coherence length ratio
         "epsilon": n_p_SLy4 / n_n_SLy4,  # asymmetry parameter
+        "m_eff_relL_n": meff_relL_n_SLy4,
+        "m_eff_relL_p": meff_relL_p_SLy4
     }
 )
 
@@ -231,6 +247,8 @@ df_SLy4.columns = pd.MultiIndex.from_tuples(
             "[cm]",
             "[cm]",
             "[cm]",
+            "[]",
+            "[]",
             "[]",
             "[]",
             "[]",
