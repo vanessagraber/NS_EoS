@@ -98,6 +98,19 @@ def test_case_5():
     return data
 
 
+@pytest.fixture()
+def test_case_6():
+    data = {
+        "eos": ec.EquationOfState(),
+        "n_b": np.array([0.2]),
+        "A_nn": np.array([35.16154538033905]),
+        "A_pp": np.array([103.8765041514511]),
+        "A_np": np.array([95.419141280564]),
+    }
+
+    return data
+
+
 def test_muon_eqn_const(test_case_1):
     """verifying the value of the constant affecting the muon appearance"""
     assert np.abs(ec.muon_eqn_const - test_case_1["muon_eqn_const"]) < TOL
@@ -275,6 +288,17 @@ def test_m_eff_L_p_02(test_case_4):
     """verifying that the proton Landau effective mass is correctly calculated above muon threshold"""
     m_eff_L_p = test_case_4["eos"].m_eff_L_p(test_case_4["n_b"])
     assert np.abs((m_eff_L_p - test_case_4["m_eff_L_p"]) / m_eff_L_p) < TOL
+
+
+# modified coefficients for extended Thomas Fermi expansion
+
+
+def test_A_ii(test_case_6):
+    """verifying that the coefficients are correctly calculated"""
+    A_nn, A_pp, A_np = test_case_6["eos"].A_ii(test_case_6["n_b"])
+    assert np.isclose(A_nn, test_case_6["A_nn"])
+    assert np.isclose(A_pp, test_case_6["A_pp"])
+    assert np.isclose(A_np, test_case_6["A_np"])
 
 
 # Fermi wave numbers
