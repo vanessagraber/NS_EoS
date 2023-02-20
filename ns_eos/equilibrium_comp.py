@@ -113,7 +113,9 @@ class EquationOfState:
         :type W0: float
         """
 
-        # Skyrme parameters
+        # Skyrme parameters: units are such that the energy density is in MeV/fm**3;
+        # i.e., t0 is in MeV fm**3, t1, t2 and W0 are in MeV fm**5, t3 is in MeV fm**(3+3*sigma),
+        # t4 is in MeV fm**(3+3*sigma_2), x_i and both sigmas are dimensionless.
         self.t0 = t0
         self.t1 = t1
         self.t2 = t2
@@ -128,7 +130,7 @@ class EquationOfState:
         self.sigma_2 = sigma_2
         self.W0 = W0
 
-        # modified Skyrme parameters
+        # modified Skyrme parameters which have units MeV fm**5
         self.C_0_tau = 3 * self.t1 / 16 + 1 * self.t2 / 4 * (5 / 4 + self.x2)
         self.C_1_tau = -1 * self.t1 / 8 * (1 / 2 + self.x1) + 1 * self.t2 / 8 * (
             1 / 2 + self.x2
@@ -142,7 +144,8 @@ class EquationOfState:
 
     def _parameters_hamiltonian(self) -> Tuple[float, ...]:
         """
-        function calculates the parameters for the effective Skyrme Hamiltonian
+        function calculates the parameters for the effective Skyrme Hamiltonian,
+        which are given in units of MeV fm**5
         """
 
         B1 = (self.t0 / 2) * (1 + self.x0 / 2)
@@ -159,7 +162,7 @@ class EquationOfState:
     def H_parameters(self) -> Tuple[float, ...]:
         """
         function calculates the three H_i parameters of the energy
-        density functional
+        density functional which are in units MeV fm**5
         """
 
         H_1 = self.C_0_tau - self.C_1_tau
