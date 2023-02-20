@@ -359,6 +359,78 @@ class EquationOfState:
 
         return m_eff_L_p
 
+    # modified coefficients for energy density functional in extended Thomas Fermi model
+
+    def A_ii(self, n_b: np.ndarray) -> Tuple[np.ndarray, ...]:
+        """
+        function calculates the three coefficients A_nn, A_pp, A_np = A_pn (in units of MeV fm**5)
+        for the energy density functional in the extended Thomas Fermi model
+        following Brack et al. (1985); only the first-order corrections to the
+        Thomas-Fermi result are included
+        """
+
+        # define dimensionless relative effective masses
+        f_n = m_u_cgs / self.m_eff_L_n(n_b)
+        f_p = m_u_cgs / self.m_eff_L_p(n_b)
+
+        A_nn = (
+            +1.0 / 36.0 * hbar**2 / (2.0 * m_u) * f_n / self.n_n(n_b)
+            - (self.C_0_Delta_n + self.C_1_Delta_n)
+            - (self.C_0_tau + self.C_1_tau) / 3.0
+            - (1.0 / 12.0)
+            * (2.0 * m_u / hbar**2)
+            * (self.C_0_tau + self.C_1_tau) ** 2
+            * (self.n_n(n_b) / f_n)
+            - (1.0 / 12.0)
+            * (2.0 * m_u / hbar**2)
+            * (self.C_0_tau - self.C_1_tau) ** 2
+            * (self.n_p(n_b) / f_p)
+            - (1.0 / 2.0)
+            * (2.0 * m_u / hbar**2)
+            * (self.C_0_Delta_J + self.C_1_Delta_J) ** 2
+            * (self.n_n(n_b) / f_n)
+            - (1.0 / 2.0)
+            * (2.0 * m_u / hbar**2)
+            * (self.C_0_Delta_J - self.C_1_Delta_J) ** 2
+            * (self.n_p(n_b) / f_p)
+        )
+
+        A_pp = (
+            +1.0 / 36.0 * hbar**2 / (2.0 * m_u) * f_p / self.n_p(n_b)
+            - (self.C_0_Delta_n + self.C_1_Delta_n)
+            - (self.C_0_tau + self.C_1_tau) / 3.0
+            - (1.0 / 12.0)
+            * (2.0 * m_u / hbar**2)
+            * (self.C_0_tau + self.C_1_tau) ** 2
+            * (self.n_p(n_b) / f_p)
+            - (1.0 / 12.0)
+            * (2.0 * m_u / hbar**2)
+            * (self.C_0_tau - self.C_1_tau) ** 2
+            * (self.n_n(n_b) / f_n)
+            - (1.0 / 2.0)
+            * (2.0 * m_u / hbar**2)
+            * (self.C_0_Delta_J + self.C_1_Delta_J) ** 2
+            * (self.n_p(n_b) / f_p)
+            - (1.0 / 2.0)
+            * (2.0 * m_u / hbar**2)
+            * (self.C_0_Delta_J - self.C_1_Delta_J) ** 2
+            * (self.n_n(n_b) / f_n)
+        )
+
+        A_np = (
+            -2.0 * (self.C_0_Delta_n - self.C_1_Delta_n)
+            - (2.0 / 3.0) * (self.C_0_tau - self.C_1_tau)
+            - (1.0 / 6.0)
+            * (2 * m_u / hbar**2)
+            * (self.C_0_tau**2 - self.C_1_tau**2)
+            * (self.n_n(n_b) / f_n + self.n_p(n_b) / f_p)
+            - (2 * m_u / hbar**2)
+            * (self.C_0_Delta_J**2 - self.C_1_Delta_J**2)
+            * (self.n_n(n_b) / f_n + self.n_p(n_b) / f_p)
+        )
+
+        return A_nn, A_pp, A_np
+
     # Fermi wave numbers
 
     def k_F_n(self, n_b: np.ndarray) -> np.ndarray:
