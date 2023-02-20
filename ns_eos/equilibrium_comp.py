@@ -31,7 +31,7 @@ fm = 1e-13  # fm to cm
 MeV = 1e6 * 1.782662e-33 * (c * fm) ** 2  # MeV to g*cm**2/s**2
 
 # constant in units of 1/fm**2 related to the appearance of muon
-muon_eqn_const = m_mu ** 2 * c ** 2 / (hbar ** 2 * (3 * np.pi ** 2) ** (2 / 3))
+muon_eqn_const = m_mu**2 * c**2 / (hbar**2 * (3 * np.pi**2) ** (2 / 3))
 
 
 def relation_nmu_ne(n_e: float) -> float:
@@ -80,6 +80,7 @@ class EquationOfState:
         x4=0.0,
         sigma=0.14416,
         sigma_2=0.0,
+        W0=41.958,
     ):
         """
         predefined parameters are for the NRAPR equation of state
@@ -108,6 +109,8 @@ class EquationOfState:
         :type sigma: float
         :param sigma_2: Skyrme parameter
         :type sigma_2: float
+        :param W0: Skyrme parameter
+        :type W0: float
         """
 
         # Skyrme parameters
@@ -123,6 +126,7 @@ class EquationOfState:
         self.x4 = x4
         self.sigma = sigma
         self.sigma_2 = sigma_2
+        self.W0 = W0
 
         # modified Skyrme parameters
         self.C_0_tau = 3 * self.t1 / 16 + 1 * self.t2 / 4 * (5 / 4 + self.x2)
@@ -133,6 +137,8 @@ class EquationOfState:
         self.C_1_Delta_n = 3 * self.t1 / 32 * (1 / 2 + self.x1) + 1 * self.t2 / 32 * (
             1 / 2 + self.x2
         )
+        self.C_0_Delta_J = -3 * self.W0 / 4
+        self.C_1_Delta_J = -1 * self.W0 / 4
 
     def _parameters_hamiltonian(self) -> Tuple[float, ...]:
         """
@@ -158,9 +164,7 @@ class EquationOfState:
 
         H_1 = self.C_0_tau - self.C_1_tau
         H_2 = -4 * self.C_0_Delta_n + 4 * self.C_1_Delta_n
-        H_3 = (
-            self.C_0_tau + self.C_1_tau - 4 * self.C_0_Delta_n - 4 * self.C_1_Delta_n
-        )
+        H_3 = self.C_0_tau + self.C_1_tau - 4 * self.C_0_Delta_n - 4 * self.C_1_Delta_n
 
         return H_1, H_2, H_3
 
@@ -174,18 +178,18 @@ class EquationOfState:
         b_vector = self._parameters_hamiltonian()
 
         del_mu = (
-            (3 * np.pi ** 2) ** (2 / 3)
+            (3 * np.pi**2) ** (2 / 3)
             * ((n_b - n_p) ** (2 / 3) - n_p ** (2 / 3))
-            * (hbar ** 2 / (2 * m_u) + b_vector[2] * n_b)
+            * (hbar**2 / (2 * m_u) + b_vector[2] * n_b)
             + 2
             * (n_b - 2 * n_p)
             * (
                 b_vector[1]
-                + b_vector[5] * n_b ** self.sigma
-                + b_vector[7] * n_b ** self.sigma_2
+                + b_vector[5] * n_b**self.sigma
+                + b_vector[7] * n_b**self.sigma_2
             )
             + (8 / 5)
-            * (3 * np.pi ** 2) ** (2 / 3)
+            * (3 * np.pi**2) ** (2 / 3)
             * b_vector[3]
             * ((n_b - n_p) ** (5 / 3) - n_p ** (5 / 3))
         )
@@ -200,7 +204,7 @@ class EquationOfState:
 
         n_p = relation_np_ne(n_e)
         del_mu = self.relative_chem_pot(n_b, n_p)
-        mu_e = c * hbar * (3 * np.pi ** 2 * n_e) ** (1 / 3)
+        mu_e = c * hbar * (3 * np.pi**2 * n_e) ** (1 / 3)
 
         func_min = del_mu - mu_e
 
@@ -297,7 +301,7 @@ class EquationOfState:
         """
 
         B3 = self._parameters_hamiltonian()[2]
-        beta_3 = (2 * m_u * B3) / (hbar ** 2)
+        beta_3 = (2 * m_u * B3) / (hbar**2)
         x_p = self.x_p(n_b)
         m_eff_n = m_u_cgs * (1 + beta_3 * n_b * (1 - x_p)) / (1 + beta_3 * n_b)
 
@@ -307,10 +311,10 @@ class EquationOfState:
         """
         function calculates the proton effective mass in gram for a
          baryon number density in 1/fm**3
-         """
+        """
 
         B3 = self._parameters_hamiltonian()[2]
-        beta_3 = (2 * m_u * B3) / (hbar ** 2)
+        beta_3 = (2 * m_u * B3) / (hbar**2)
         x_p = self.x_p(n_b)
         m_eff_p = m_u_cgs * (1 + beta_3 * n_b * x_p) / (1 + beta_3 * n_b)
 
@@ -327,8 +331,8 @@ class EquationOfState:
         m_eff_L_n = (
             1 / m_u_cgs
             + 2
-            / hbar ** 2
-            * fm ** 2
+            / hbar**2
+            * fm**2
             / MeV
             * (n_b * (self.C_0_tau - self.C_1_tau) + 2 * self.n_n(n_b) * self.C_1_tau)
         ) ** (-1)
@@ -344,8 +348,8 @@ class EquationOfState:
         m_eff_L_p = (
             1 / m_u_cgs
             + 2
-            / hbar ** 2
-            * fm ** 2
+            / hbar**2
+            * fm**2
             / MeV
             * (n_b * (self.C_0_tau - self.C_1_tau) + 2 * self.n_p(n_b) * self.C_1_tau)
         ) ** (-1)
@@ -360,7 +364,7 @@ class EquationOfState:
         given baryon number density in 1/fm**3
         """
 
-        k_F_n = (3 * np.pi ** 2 * self.n_n(n_b)) ** (1 / 3)
+        k_F_n = (3 * np.pi**2 * self.n_n(n_b)) ** (1 / 3)
 
         return k_F_n
 
@@ -370,7 +374,7 @@ class EquationOfState:
         given baryon number density in 1/fm**3
         """
 
-        k_F_p = (3 * np.pi ** 2 * self.n_p(n_b)) ** (1 / 3)
+        k_F_p = (3 * np.pi**2 * self.n_p(n_b)) ** (1 / 3)
 
         return k_F_p
 
@@ -382,7 +386,7 @@ class EquationOfState:
         given baryon number density in 1/fm**3
         """
 
-        lambda_L = ((m_u * c ** 2) / (q ** 2 * 4 * np.pi * self.n_p(n_b))) ** (
+        lambda_L = ((m_u * c**2) / (q**2 * 4 * np.pi * self.n_p(n_b))) ** (
             1 / 2
         ) * fm
 
