@@ -30,7 +30,7 @@ MeV = 1e6 * 1.782662e-33 * (c * fm) ** 2  # MeV to g*cm**2/s**2
 
 # baryon number density and mass energy density in units of 1/fm**3 and g/cm**3
 n_b = np.linspace(0.06, 0.6, 500)
-rho_b = m_u_cgs * n_b / fm ** 3
+rho_b = m_u_cgs * n_b / fm**3
 
 # Fermi wave number to calculate the
 k_F = np.arange(0, 3.5, 0.01)
@@ -62,6 +62,7 @@ eos_NRAPR = ec.EquationOfState(
     x2=0.027170,
     x3=0.13611,
     sigma=0.14416,
+    W0=41.958,
 )
 
 n_n_NRAPR = eos_NRAPR.n_n(n_b)
@@ -75,6 +76,7 @@ xi_n_NRAPR = eos_NRAPR.xi_n(n_b)
 xi_p_NRAPR = eos_NRAPR.xi_p(n_b)
 meff_relL_n_NRAPR = eos_NRAPR.m_eff_L_n(n_b) / m_u_cgs
 meff_relL_p_NRAPR = eos_NRAPR.m_eff_L_p(n_b) / m_u_cgs
+A_nn_NRAPR, A_pp_NRAPR, A_np_NRAPR = eos_NRAPR.A_ii(n_b)
 H_i_NRAPR = eos_NRAPR.H_parameters()
 
 print("H_i for NRAPR: ", [round(H, 3) for H in H_i_NRAPR])
@@ -94,7 +96,10 @@ df_NRAPR = pd.DataFrame(
         "R": xi_p_NRAPR / xi_n_NRAPR,  # coherence length ratio
         "epsilon": n_p_NRAPR / n_n_NRAPR,  # asymmetry parameter
         "m_eff_relL_n": meff_relL_n_NRAPR,
-        "m_eff_relL_p": meff_relL_p_NRAPR
+        "m_eff_relL_p": meff_relL_p_NRAPR,
+        "A_nn": A_nn_NRAPR,
+        "A_pp": A_pp_NRAPR,
+        "A_np": A_np_NRAPR,
     }
 )
 
@@ -116,6 +121,9 @@ df_NRAPR.columns = pd.MultiIndex.from_tuples(
             "[]",
             "[]",
             "[]",
+            "[MeV fm**5]",
+            "[MeV fm**5]",
+            "[MeV fm**5]",
         ],
     )
 )
@@ -134,6 +142,7 @@ eos_LNS = ec.EquationOfState(
     x2=-0.9538,
     x3=-0.0341,
     sigma=1 / 6,
+    W0=96.00,
 )
 
 n_n_LNS = eos_LNS.n_n(n_b)
@@ -143,6 +152,7 @@ xi_n_LNS = eos_LNS.xi_n(n_b)
 xi_p_LNS = eos_LNS.xi_p(n_b)
 meff_relL_n_LNS = eos_LNS.m_eff_L_n(n_b) / m_u_cgs
 meff_relL_p_LNS = eos_LNS.m_eff_L_p(n_b) / m_u_cgs
+A_nn_LNS, A_pp_LNS, A_np_LNS = eos_LNS.A_ii(n_b)
 H_i_LNS = eos_LNS.H_parameters()
 
 print("H_i for LNS: ", [round(H, 3) for H in H_i_LNS])
@@ -160,7 +170,10 @@ df_LNS = pd.DataFrame(
         "R": xi_p_LNS / xi_n_LNS,  # coherence length ratio
         "epsilon": n_p_LNS / n_n_LNS,  # asymmetry parameter
         "m_eff_relL_n": meff_relL_n_LNS,
-        "m_eff_relL_p": meff_relL_p_LNS
+        "m_eff_relL_p": meff_relL_p_LNS,
+        "A_nn": A_nn_LNS,
+        "A_pp": A_pp_LNS,
+        "A_np": A_np_LNS,
     }
 )
 
@@ -180,6 +193,9 @@ df_LNS.columns = pd.MultiIndex.from_tuples(
             "[]",
             "[]",
             "[]",
+            "[MeV fm**5]",
+            "[MeV fm**5]",
+            "[MeV fm**5]",
         ],
     )
 )
@@ -198,6 +214,7 @@ eos_SLy4 = ec.EquationOfState(
     x2=-1,
     x3=1.354,
     sigma=1 / 6,
+    W0=123.0,
 )
 
 n_n_SLy4 = eos_SLy4.n_n(n_b)
@@ -211,6 +228,7 @@ xi_n_SLy4 = eos_SLy4.xi_n(n_b)
 xi_p_SLy4 = eos_SLy4.xi_p(n_b)
 meff_relL_n_SLy4 = eos_SLy4.m_eff_L_n(n_b) / m_u_cgs
 meff_relL_p_SLy4 = eos_SLy4.m_eff_L_p(n_b) / m_u_cgs
+A_nn_SLy4, A_pp_SLy4, A_np_SLy4 = eos_SLy4.A_ii(n_b)
 H_i_SLy4 = eos_SLy4.H_parameters()
 
 print("H_i for SLy4: ", [round(H, 3) for H in H_i_SLy4])
@@ -230,7 +248,10 @@ df_SLy4 = pd.DataFrame(
         "R": xi_p_SLy4 / xi_n_SLy4,  # coherence length ratio
         "epsilon": n_p_SLy4 / n_n_SLy4,  # asymmetry parameter
         "m_eff_relL_n": meff_relL_n_SLy4,
-        "m_eff_relL_p": meff_relL_p_SLy4
+        "m_eff_relL_p": meff_relL_p_SLy4,
+        "A_nn": A_nn_SLy4,
+        "A_pp": A_pp_SLy4,
+        "A_np": A_np_SLy4,
     }
 )
 
@@ -252,6 +273,9 @@ df_SLy4.columns = pd.MultiIndex.from_tuples(
             "[]",
             "[]",
             "[]",
+            "[MeV fm**5]",
+            "[MeV fm**5]",
+            "[MeV fm**5]",
         ],
     )
 )
@@ -270,6 +294,7 @@ eos_Sk = ec.EquationOfState(
     x2=0.0,
     x3=0.01,
     sigma=0.35,
+    # W0=,
 )
 
 n_n_Sk = eos_Sk.n_n(n_b)
@@ -277,6 +302,7 @@ n_p_Sk = eos_Sk.n_p(n_b)
 lambda_Sk = eos_Sk.lambda_L(n_b)
 xi_n_Sk = eos_Sk.xi_n(n_b)
 xi_p_Sk = eos_Sk.xi_p(n_b)
+# A_nn_Sk, A_pp_Sk, A_np_Sk = eos_Sk.A_ii(n_b)
 H_i_Sk = eos_Sk.H_parameters()
 
 print("H_i for Ska35s20: ", [round(H, 3) for H in H_i_Sk])
@@ -293,6 +319,9 @@ df_Sk = pd.DataFrame(
         "kappa": lambda_Sk / xi_p_Sk,  # Ginzburg-Landau parameter
         "R": xi_p_Sk / xi_n_Sk,  # coherence length ratio
         "epsilon": n_p_Sk / n_n_Sk,  # asymmetry parameter
+        # "A_nn": A_nn_Sk,
+        # "A_pp": A_pp_Sk,
+        # "A_np": A_np_Sk,
     }
 )
 
@@ -310,6 +339,9 @@ df_Sk.columns = pd.MultiIndex.from_tuples(
             "[]",
             "[]",
             "[]",
+            # "[MeV fm**5]",
+            # "[MeV fm**5]",
+            # "[MeV fm**5]",
         ],
     )
 )
@@ -328,6 +360,7 @@ eos_SQMC = ec.EquationOfState(
     x2=0.0,
     x3=0.0,
     sigma=1 / 6,
+    W0=104.58,
 )
 
 n_n_SQMC = eos_SQMC.n_n(n_b)
@@ -335,6 +368,7 @@ n_p_SQMC = eos_SQMC.n_p(n_b)
 lambda_SQMC = eos_SQMC.lambda_L(n_b)
 xi_n_SQMC = eos_SQMC.xi_n(n_b)
 xi_p_SQMC = eos_SQMC.xi_p(n_b)
+A_nn_SQMC, A_pp_SQMC, A_np_SQMC = eos_SQMC.A_ii(n_b)
 H_i_SQMC = eos_SQMC.H_parameters()
 
 print("H_i for SQMC700: ", [round(H, 3) for H in H_i_SQMC])
@@ -351,6 +385,9 @@ df_SQMC = pd.DataFrame(
         "kappa": lambda_SQMC / xi_p_SQMC,  # Ginzburg-Landau parameter
         "R": xi_p_SQMC / xi_n_SQMC,  # coherence length ratio
         "epsilon": n_p_SQMC / n_n_SQMC,  # asymmetry parameter
+        "A_nn": A_nn_SQMC,
+        "A_pp": A_pp_SQMC,
+        "A_np": A_np_SQMC,
     }
 )
 
@@ -368,6 +405,9 @@ df_SQMC.columns = pd.MultiIndex.from_tuples(
             "[]",
             "[]",
             "[]",
+            "[MeV fm**5]",
+            "[MeV fm**5]",
+            "[MeV fm**5]",
         ],
     )
 )
@@ -389,6 +429,7 @@ eos_Skchi450 = ec.EquationOfState(
     x4=-11.316,
     sigma=1 / 3,
     sigma_2=1,
+    W0=106.4288,
 )
 
 n_n_Skchi450 = eos_Skchi450.n_n(n_b)
@@ -400,6 +441,7 @@ Delta_p_Skchi450 = gap_protons(k_p_Skchi450)
 lambda_Skchi450 = eos_Skchi450.lambda_L(n_b)
 xi_n_Skchi450 = eos_Skchi450.xi_n(n_b)
 xi_p_Skchi450 = eos_Skchi450.xi_p(n_b)
+A_nn_Skchi450, A_pp_Skchi450, A_np_Skchi450 = eos_Skchi450.A_ii(n_b)
 H_i_Skchi450 = eos_Skchi450.H_parameters()
 
 print("H_i for Skchi450: ", [round(H, 3) for H in H_i_Skchi450])
@@ -418,6 +460,9 @@ df_Skchi450 = pd.DataFrame(
         "kappa": lambda_Skchi450 / xi_p_Skchi450,  # Ginzburg-Landau parameter
         "R": xi_p_Skchi450 / xi_n_Skchi450,  # coherence length ratio
         "epsilon": n_p_Skchi450 / n_n_Skchi450,  # asymmetry parameter
+        "A_nn": A_nn_Skchi450,
+        "A_pp": A_pp_Skchi450,
+        "A_np": A_np_Skchi450,
     }
 )
 
@@ -437,6 +482,9 @@ df_Skchi450.columns = pd.MultiIndex.from_tuples(
             "[]",
             "[]",
             "[]",
+            "[MeV fm**5]",
+            "[MeV fm**5]",
+            "[MeV fm**5]",
         ],
     )
 )
