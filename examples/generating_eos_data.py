@@ -134,14 +134,15 @@ df_NRAPR.to_csv("./examples/data/parameters_NRAPR.txt", index=False, header=True
 
 eos_LNS = ec.EquationOfState(
     t0=-2484.97,
-    t1=266.74,
-    t2=-337.14,
+    t1=266.735,
+    t2=-337.135,
     t3=14588.2,
-    x0=0.0623,
-    x1=0.6585,
-    x2=-0.9538,
-    x3=-0.0341,
+    x0=0.06277,
+    x1=0.65845,
+    x2=-0.95382,
+    x3=-0.03413,
     sigma=1 / 6,
+    sigma_2=0.0,
     W0=96.00,
 )
 
@@ -214,6 +215,7 @@ eos_SLy4 = ec.EquationOfState(
     x2=-1,
     x3=1.354,
     sigma=1 / 6,
+    sigma_2=0.0,
     W0=123.0,
 )
 
@@ -294,6 +296,7 @@ eos_Sk = ec.EquationOfState(
     x2=0.0,
     x3=0.01,
     sigma=0.35,
+    sigma_2=0.0,
     # W0=,
 )
 
@@ -417,16 +420,16 @@ df_SQMC.to_csv("./examples/data/parameters_SQMC700.txt", index=None, header=True
 # ---- Skchi450 - parameters are taken from Lim and Holt (2017) ---- #
 
 eos_Skchi450 = ec.EquationOfState(
-    t0=-1803.29,
-    t1=301.82,
-    t2=-273.28,
-    t3=12783.86,
-    t4=564.10,
-    x0=0.443,
+    t0=-1803.2928,
+    t1=301.8208,
+    t2=-273.2827,
+    t3=12783.8619,
+    t4=564.1049,
+    x0=0.4430,
     x1=-0.3622,
     x2=-0.4105,
     x3=0.6545,
-    x4=-11.316,
+    x4=-11.3160,
     sigma=1 / 3,
     sigma_2=1,
     W0=106.4288,
