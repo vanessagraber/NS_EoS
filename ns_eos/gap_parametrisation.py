@@ -224,8 +224,8 @@ def gap_singlet_neutrons(k_F_n: float, gap_parameters: TypedDict) -> float:
     """function determines the neutron singlet energy gap in MeV as a function
     of proton Fermi number in 1/fm"""
 
-    limit_left = newton(gap_full, 0.01, args=(gap_parameters,))
-    limit_right = newton(gap_full, 0.9, args=(gap_parameters,))
+    limit_left = newton(gap_full, 0.1, args=(gap_parameters,))
+    limit_right = newton(gap_full, 1.5, args=(gap_parameters,))
 
     if k_F_n > limit_right:
         return np.nan
