@@ -9,6 +9,7 @@ Authors:
 """
 
 import ns_eos.equilibrium_comp as ec
+import ns_eos.gap_parametrisation as gp
 import numpy as np
 import pytest
 
@@ -345,23 +346,23 @@ def test_lambda_L_02(test_case_4):
 
 def test_xi_n_01(test_case_3):
     """verifying that the neutron coherence length is correctly calculated below muon threshold"""
-    xi_n = test_case_3["eos"].xi_n(test_case_3["n_b"])
+    xi_n = test_case_3["eos"].xi_n(test_case_3["n_b"], gp.neutron_triplet_TToa)
     assert np.abs((xi_n - test_case_3["xi_n"]) / xi_n) < TOL
 
 
 def test_xi_n_02(test_case_4):
     """verifying that the neutron coherence length is correctly calculated above muon threshold"""
-    xi_n = test_case_4["eos"].xi_n(test_case_4["n_b"])
+    xi_n = test_case_4["eos"].xi_n(test_case_4["n_b"], gp.neutron_triplet_TToa)
     assert np.abs((xi_n - test_case_4["xi_n"]) / xi_n) < TOL
 
 
 def test_xi_p_01(test_case_3):
     """verifying that the proton coherence length is correctly calculated below muon threshold"""
-    xi_p = test_case_3["eos"].xi_p(test_case_3["n_b"])
+    xi_p = test_case_3["eos"].xi_p(test_case_3["n_b"], gp.proton_singlet_CCDK)
     assert np.abs((xi_p - test_case_3["xi_p"]) / xi_p) < TOL
 
 
 def test_xi_p_02(test_case_4):
     """verifying that the proton coherence length is correctly calculated above muon threshold"""
-    xi_p = test_case_4["eos"].xi_p(test_case_4["n_b"])
+    xi_p = test_case_4["eos"].xi_p(test_case_4["n_b"], gp.proton_singlet_CCDK)
     assert np.abs((xi_p - test_case_4["xi_p"]) / xi_p) < TOL
