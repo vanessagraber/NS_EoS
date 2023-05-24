@@ -13,9 +13,6 @@ import numpy as np
 import pytest
 
 
-TOL = 1e-5
-
-
 @pytest.fixture()
 def test_case_1():
     data = {"k_F": 0.5, "Delta": 0.5924535603715172}
