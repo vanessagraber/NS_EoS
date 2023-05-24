@@ -35,13 +35,19 @@ rho_b = m_u_cgs * n_b / fm**3
 # Fermi wave number to calculate the
 k_F = np.arange(0, 3.5, 0.01)
 
-# ---- Calculating the energy gaps as a function of k_F ---- #
+# ---- Calculating the energy gaps as a function of k_F for two specific fits ---- #
+gap_singlet_protons = np.vectorize(gp.gap_singlet_protons, excluded="gap_parameters")
+gap_triplet_neutrons = np.vectorize(gp.gap_triplet_neutrons, excluded="gap_parameters")
 
-gap_protons = np.vectorize(gp.gap_protons)
-gap_neutrons = np.vectorize(gp.gap_neutrons)
+gap_parameters_protons = gp.proton_singlet_CCDK
+gap_parameters_neutrons = gp.neutron_triplet_TToa
 
 df_gaps = pd.DataFrame(
-    {"k_F": k_F, "Delta_p": gap_protons(k_F), "Delta_n": gap_neutrons(k_F)}
+    {
+        "k_F": k_F,
+        "Delta_p": gap_singlet_protons(k_F, gap_parameters_protons),
+        "Delta_n": gap_triplet_neutrons(k_F, gap_parameters_neutrons),
+    }
 )
 
 df_gaps.columns = pd.MultiIndex.from_tuples(
@@ -69,11 +75,11 @@ n_n_NRAPR = eos_NRAPR.n_n(n_b)
 n_p_NRAPR = eos_NRAPR.n_p(n_b)
 k_n_NRAPR = eos_NRAPR.k_F_n(n_b)
 k_p_NRAPR = eos_NRAPR.k_F_p(n_b)
-Delta_n_NRAPR = gap_neutrons(k_n_NRAPR)
-Delta_p_NRAPR = gap_protons(k_p_NRAPR)
+Delta_n_NRAPR = gap_triplet_neutrons(k_n_NRAPR, gap_parameters_neutrons)
+Delta_p_NRAPR = gap_singlet_protons(k_p_NRAPR, gap_parameters_protons)
 lambda_NRAPR = eos_NRAPR.lambda_L(n_b)
-xi_n_NRAPR = eos_NRAPR.xi_n(n_b)
-xi_p_NRAPR = eos_NRAPR.xi_p(n_b)
+xi_n_NRAPR = eos_NRAPR.xi_n(n_b, gap_parameters_neutrons)
+xi_p_NRAPR = eos_NRAPR.xi_p(n_b, gap_parameters_protons)
 meff_relL_n_NRAPR = eos_NRAPR.m_eff_L_n(n_b) / m_u_cgs
 meff_relL_p_NRAPR = eos_NRAPR.m_eff_L_p(n_b) / m_u_cgs
 A_nn_NRAPR, A_pp_NRAPR, A_np_NRAPR = eos_NRAPR.A_ii(n_b)
@@ -149,8 +155,8 @@ eos_LNS = ec.EquationOfState(
 n_n_LNS = eos_LNS.n_n(n_b)
 n_p_LNS = eos_LNS.n_p(n_b)
 lambda_LNS = eos_LNS.lambda_L(n_b)
-xi_n_LNS = eos_LNS.xi_n(n_b)
-xi_p_LNS = eos_LNS.xi_p(n_b)
+xi_n_LNS = eos_LNS.xi_n(n_b, gap_parameters_neutrons)
+xi_p_LNS = eos_LNS.xi_p(n_b, gap_parameters_protons)
 meff_relL_n_LNS = eos_LNS.m_eff_L_n(n_b) / m_u_cgs
 meff_relL_p_LNS = eos_LNS.m_eff_L_p(n_b) / m_u_cgs
 A_nn_LNS, A_pp_LNS, A_np_LNS = eos_LNS.A_ii(n_b)
@@ -223,11 +229,11 @@ n_n_SLy4 = eos_SLy4.n_n(n_b)
 n_p_SLy4 = eos_SLy4.n_p(n_b)
 k_n_SLy4 = eos_SLy4.k_F_n(n_b)
 k_p_SLy4 = eos_SLy4.k_F_p(n_b)
-Delta_n_SLy4 = gap_neutrons(k_n_SLy4)
-Delta_p_SLy4 = gap_protons(k_p_SLy4)
+Delta_n_SLy4 = gap_triplet_neutrons(k_n_SLy4, gap_parameters_neutrons)
+Delta_p_SLy4 = gap_singlet_protons(k_p_SLy4, gap_parameters_protons)
 lambda_SLy4 = eos_SLy4.lambda_L(n_b)
-xi_n_SLy4 = eos_SLy4.xi_n(n_b)
-xi_p_SLy4 = eos_SLy4.xi_p(n_b)
+xi_n_SLy4 = eos_SLy4.xi_n(n_b, gap_parameters_neutrons)
+xi_p_SLy4 = eos_SLy4.xi_p(n_b, gap_parameters_protons)
 meff_relL_n_SLy4 = eos_SLy4.m_eff_L_n(n_b) / m_u_cgs
 meff_relL_p_SLy4 = eos_SLy4.m_eff_L_p(n_b) / m_u_cgs
 A_nn_SLy4, A_pp_SLy4, A_np_SLy4 = eos_SLy4.A_ii(n_b)
@@ -303,8 +309,8 @@ eos_Sk = ec.EquationOfState(
 n_n_Sk = eos_Sk.n_n(n_b)
 n_p_Sk = eos_Sk.n_p(n_b)
 lambda_Sk = eos_Sk.lambda_L(n_b)
-xi_n_Sk = eos_Sk.xi_n(n_b)
-xi_p_Sk = eos_Sk.xi_p(n_b)
+xi_n_Sk = eos_Sk.xi_n(n_b, gap_parameters_neutrons)
+xi_p_Sk = eos_Sk.xi_p(n_b, gap_parameters_protons)
 # A_nn_Sk, A_pp_Sk, A_np_Sk = eos_Sk.A_ii(n_b)
 H_i_Sk = eos_Sk.H_parameters()
 
@@ -369,8 +375,8 @@ eos_SQMC = ec.EquationOfState(
 n_n_SQMC = eos_SQMC.n_n(n_b)
 n_p_SQMC = eos_SQMC.n_p(n_b)
 lambda_SQMC = eos_SQMC.lambda_L(n_b)
-xi_n_SQMC = eos_SQMC.xi_n(n_b)
-xi_p_SQMC = eos_SQMC.xi_p(n_b)
+xi_n_SQMC = eos_SQMC.xi_n(n_b, gap_parameters_neutrons)
+xi_p_SQMC = eos_SQMC.xi_p(n_b, gap_parameters_protons)
 A_nn_SQMC, A_pp_SQMC, A_np_SQMC = eos_SQMC.A_ii(n_b)
 H_i_SQMC = eos_SQMC.H_parameters()
 
@@ -439,11 +445,11 @@ n_n_Skchi450 = eos_Skchi450.n_n(n_b)
 n_p_Skchi450 = eos_Skchi450.n_p(n_b)
 k_n_Skchi450 = eos_Skchi450.k_F_n(n_b)
 k_p_Skchi450 = eos_Skchi450.k_F_p(n_b)
-Delta_n_Skchi450 = gap_neutrons(k_n_Skchi450)
-Delta_p_Skchi450 = gap_protons(k_p_Skchi450)
+Delta_n_Skchi450 = gap_triplet_neutrons(k_n_Skchi450, gap_parameters_neutrons)
+Delta_p_Skchi450 = gap_singlet_protons(k_p_Skchi450, gap_parameters_protons)
 lambda_Skchi450 = eos_Skchi450.lambda_L(n_b)
-xi_n_Skchi450 = eos_Skchi450.xi_n(n_b)
-xi_p_Skchi450 = eos_Skchi450.xi_p(n_b)
+xi_n_Skchi450 = eos_Skchi450.xi_n(n_b, gap_parameters_neutrons)
+xi_p_Skchi450 = eos_Skchi450.xi_p(n_b, gap_parameters_protons)
 A_nn_Skchi450, A_pp_Skchi450, A_np_Skchi450 = eos_Skchi450.A_ii(n_b)
 H_i_Skchi450 = eos_Skchi450.H_parameters()
 
