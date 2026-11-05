@@ -13,7 +13,6 @@ import ns_eos.gap_parametrisation as gp
 import numpy as np
 import pytest
 
-
 TOL = 1e-5
 
 
@@ -61,6 +60,7 @@ def test_case_3():
         "k_F_n": np.array([1.417420]),
         "k_F_p": np.array([0.483707]),
         "lambda": np.array([1.160505e-11]),
+        "lambda_star": np.array([9.839138e-12]),
         "xi_n": np.array([1.259872e-11]),
         "xi_p": np.array([1.130619e-12]),
     }
@@ -85,6 +85,7 @@ def test_case_4():
         "k_F_n": np.array([1.764964]),
         "k_F_p": np.array([0.751097]),
         "lambda": np.array([5.997578e-12]),
+        "lambda_star": np.array([4.526989e-12]),
         "xi_n": np.array([7.511429e-12]),
         "xi_p": np.array([1.762823e-12]),
     }
@@ -342,6 +343,18 @@ def test_lambda_L_02(test_case_4):
     """verifying that the London length is correctly calculated above muon threshold"""
     lambda_L = test_case_4["eos"].lambda_L(test_case_4["n_b"])
     assert np.abs((lambda_L - test_case_4["lambda"]) / lambda_L) < TOL
+
+
+def test_lambda_star_01(test_case_3):
+    """verifying that the effective London length is correctly calculated below muon threshold"""
+    lambda_star = test_case_3["eos"].lambda_star(test_case_3["n_b"])
+    assert np.abs((lambda_star - test_case_3["lambda_star"]) / lambda_star) < TOL
+
+
+def test_lambda_star_02(test_case_4):
+    """verifying that the effective London length is correctly calculated above muon threshold"""
+    lambda_star = test_case_4["eos"].lambda_star(test_case_4["n_b"])
+    assert np.abs((lambda_star - test_case_4["lambda_star"]) / lambda_star) < TOL
 
 
 def test_xi_n_01(test_case_3):
