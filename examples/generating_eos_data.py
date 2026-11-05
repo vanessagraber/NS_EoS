@@ -78,6 +78,7 @@ k_p_NRAPR = eos_NRAPR.k_F_p(n_b)
 Delta_n_NRAPR = gap_triplet_neutrons(k_n_NRAPR, gap_parameters_neutrons)
 Delta_p_NRAPR = gap_singlet_protons(k_p_NRAPR, gap_parameters_protons)
 lambda_NRAPR = eos_NRAPR.lambda_L(n_b)
+lambda_star_NRAPR = eos_NRAPR.lambda_star(n_b)
 xi_n_NRAPR = eos_NRAPR.xi_n(n_b, gap_parameters_neutrons)
 xi_p_NRAPR = eos_NRAPR.xi_p(n_b, gap_parameters_protons)
 meff_relL_n_NRAPR = eos_NRAPR.m_eff_L_n(n_b) / m_u_cgs
@@ -96,6 +97,7 @@ df_NRAPR = pd.DataFrame(
         "Delta_n": Delta_n_NRAPR,
         "Delta_p": Delta_p_NRAPR,
         "lambda": lambda_NRAPR,
+        "lambda_star": lambda_star_NRAPR,
         "xi_n": xi_n_NRAPR,
         "xi_p": xi_p_NRAPR,
         "kappa": lambda_NRAPR / xi_p_NRAPR,  # Ginzburg-Landau parameter
@@ -119,6 +121,7 @@ df_NRAPR.columns = pd.MultiIndex.from_tuples(
             "[1/fm**3]",
             "[MeV]",
             "[MeV]",
+            "[cm]",
             "[cm]",
             "[cm]",
             "[cm]",
@@ -155,6 +158,7 @@ eos_LNS = ec.EquationOfState(
 n_n_LNS = eos_LNS.n_n(n_b)
 n_p_LNS = eos_LNS.n_p(n_b)
 lambda_LNS = eos_LNS.lambda_L(n_b)
+lambda_star_LNS = eos_LNS.lambda_star(n_b)
 xi_n_LNS = eos_LNS.xi_n(n_b, gap_parameters_neutrons)
 xi_p_LNS = eos_LNS.xi_p(n_b, gap_parameters_protons)
 meff_relL_n_LNS = eos_LNS.m_eff_L_n(n_b) / m_u_cgs
@@ -171,6 +175,7 @@ df_LNS = pd.DataFrame(
         "n_n": n_n_LNS,
         "n_p": n_p_LNS,
         "lambda": lambda_LNS,
+        "lambda_star": lambda_star_LNS,
         "xi_n": xi_n_LNS,
         "xi_p": xi_p_LNS,
         "kappa": lambda_LNS / xi_p_LNS,  # Ginzburg-Landau parameter
@@ -192,6 +197,7 @@ df_LNS.columns = pd.MultiIndex.from_tuples(
             "[g/cm**3]",
             "[1/fm**3]",
             "[1/fm**3]",
+            "[cm]",
             "[cm]",
             "[cm]",
             "[cm]",
@@ -232,6 +238,7 @@ k_p_SLy4 = eos_SLy4.k_F_p(n_b)
 Delta_n_SLy4 = gap_triplet_neutrons(k_n_SLy4, gap_parameters_neutrons)
 Delta_p_SLy4 = gap_singlet_protons(k_p_SLy4, gap_parameters_protons)
 lambda_SLy4 = eos_SLy4.lambda_L(n_b)
+lambda_star_SLy4 = eos_SLy4.lambda_star(n_b)
 xi_n_SLy4 = eos_SLy4.xi_n(n_b, gap_parameters_neutrons)
 xi_p_SLy4 = eos_SLy4.xi_p(n_b, gap_parameters_protons)
 meff_relL_n_SLy4 = eos_SLy4.m_eff_L_n(n_b) / m_u_cgs
@@ -250,6 +257,7 @@ df_SLy4 = pd.DataFrame(
         "Delta_n": Delta_n_SLy4,
         "Delta_p": Delta_p_SLy4,
         "lambda": lambda_SLy4,
+        "lambda_star": lambda_star_SLy4,
         "xi_n": xi_n_SLy4,
         "xi_p": xi_p_SLy4,
         "kappa": lambda_SLy4 / xi_p_SLy4,  # Ginzburg-Landau parameter
@@ -273,6 +281,7 @@ df_SLy4.columns = pd.MultiIndex.from_tuples(
             "[1/fm**3]",
             "[MeV]",
             "[MeV]",
+            "[cm]",
             "[cm]",
             "[cm]",
             "[cm]",
@@ -309,6 +318,7 @@ eos_Sk = ec.EquationOfState(
 n_n_Sk = eos_Sk.n_n(n_b)
 n_p_Sk = eos_Sk.n_p(n_b)
 lambda_Sk = eos_Sk.lambda_L(n_b)
+lambda_star_Sk = eos_Sk.lambda_star(n_b)
 xi_n_Sk = eos_Sk.xi_n(n_b, gap_parameters_neutrons)
 xi_p_Sk = eos_Sk.xi_p(n_b, gap_parameters_protons)
 # A_nn_Sk, A_pp_Sk, A_np_Sk = eos_Sk.A_ii(n_b)
@@ -323,6 +333,7 @@ df_Sk = pd.DataFrame(
         "n_n": n_n_Sk,
         "n_p": n_p_Sk,
         "lambda": lambda_Sk,
+        "lambda_star": lambda_star_Sk,
         "xi_n": xi_n_Sk,
         "xi_p": xi_p_Sk,
         "kappa": lambda_Sk / xi_p_Sk,  # Ginzburg-Landau parameter
@@ -342,6 +353,7 @@ df_Sk.columns = pd.MultiIndex.from_tuples(
             "[g/cm**3]",
             "[1/fm**3]",
             "[1/fm**3]",
+            "[cm]",
             "[cm]",
             "[cm]",
             "[cm]",
@@ -375,6 +387,7 @@ eos_SQMC = ec.EquationOfState(
 n_n_SQMC = eos_SQMC.n_n(n_b)
 n_p_SQMC = eos_SQMC.n_p(n_b)
 lambda_SQMC = eos_SQMC.lambda_L(n_b)
+lambda_star_SQMC = eos_SQMC.lambda_star(n_b)
 xi_n_SQMC = eos_SQMC.xi_n(n_b, gap_parameters_neutrons)
 xi_p_SQMC = eos_SQMC.xi_p(n_b, gap_parameters_protons)
 A_nn_SQMC, A_pp_SQMC, A_np_SQMC = eos_SQMC.A_ii(n_b)
@@ -389,6 +402,7 @@ df_SQMC = pd.DataFrame(
         "n_n": n_n_SQMC,
         "n_p": n_p_SQMC,
         "lambda": lambda_SQMC,
+        "lambda_star": lambda_star_SQMC,
         "xi_n": xi_n_SQMC,
         "xi_p": xi_p_SQMC,
         "kappa": lambda_SQMC / xi_p_SQMC,  # Ginzburg-Landau parameter
@@ -408,6 +422,7 @@ df_SQMC.columns = pd.MultiIndex.from_tuples(
             "[g/cm**3]",
             "[1/fm**3]",
             "[1/fm**3]",
+            "[cm]",
             "[cm]",
             "[cm]",
             "[cm]",
@@ -448,6 +463,7 @@ k_p_Skchi450 = eos_Skchi450.k_F_p(n_b)
 Delta_n_Skchi450 = gap_triplet_neutrons(k_n_Skchi450, gap_parameters_neutrons)
 Delta_p_Skchi450 = gap_singlet_protons(k_p_Skchi450, gap_parameters_protons)
 lambda_Skchi450 = eos_Skchi450.lambda_L(n_b)
+lambda_star_Skchi450 = eos_Skchi450.lambda_star(n_b)
 xi_n_Skchi450 = eos_Skchi450.xi_n(n_b, gap_parameters_neutrons)
 xi_p_Skchi450 = eos_Skchi450.xi_p(n_b, gap_parameters_protons)
 A_nn_Skchi450, A_pp_Skchi450, A_np_Skchi450 = eos_Skchi450.A_ii(n_b)
@@ -464,6 +480,7 @@ df_Skchi450 = pd.DataFrame(
         "Delta_n": Delta_n_Skchi450,
         "Delta_p": Delta_p_Skchi450,
         "lambda": lambda_Skchi450,
+        "lambda_star": lambda_star_Skchi450,
         "xi_n": xi_n_Skchi450,
         "xi_p": xi_p_Skchi450,
         "kappa": lambda_Skchi450 / xi_p_Skchi450,  # Ginzburg-Landau parameter
@@ -485,6 +502,7 @@ df_Skchi450.columns = pd.MultiIndex.from_tuples(
             "[1/fm**3]",
             "[MeV]",
             "[MeV]",
+            "[cm]",
             "[cm]",
             "[cm]",
             "[cm]",
