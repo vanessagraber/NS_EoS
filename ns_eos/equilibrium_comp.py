@@ -473,8 +473,8 @@ class EquationOfState:
         in cm for a given baryon number density in 1/fm**3
         """
 
-        epsilon_n = 1 - self.m_eff_n(n_b)
-        epsilon_p = 1 - self.m_eff_p(n_b)
+        epsilon_n = 1 - self.m_eff_n(n_b) / m_u
+        epsilon_p = 1 - self.m_eff_p(n_b) / m_u
         epsilon_star = (1 - epsilon_n - epsilon_p) / (1 - epsilon_n)
 
         lambda_star = epsilon_star * ((m_u * c**2) / (q**2 * 4 * np.pi * self.n_p(n_b))) ** (
