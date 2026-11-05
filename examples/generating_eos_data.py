@@ -15,7 +15,6 @@ import pandas as pd
 import ns_eos.gap_parametrisation as gp
 import ns_eos.equilibrium_comp as ec
 
-
 # natural constants
 c = 2.997925e23  # speed of light in fm/s
 hbar = 6.582120e-22  # hbar in MeV s
