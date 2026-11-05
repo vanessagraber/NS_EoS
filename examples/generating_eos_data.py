@@ -35,8 +35,8 @@ rho_b = m_u_cgs * n_b / fm**3
 k_F = np.arange(0, 3.5, 0.01)
 
 # ---- Calculating the energy gaps as a function of k_F for two specific fits ---- #
-gap_singlet_protons = np.vectorize(gp.gap_singlet_protons, excluded="gap_parameters")
-gap_triplet_neutrons = np.vectorize(gp.gap_triplet_neutrons, excluded="gap_parameters")
+gap_singlet_protons = np.vectorize(gp.gap_singlet_protons, excluded={1})
+gap_triplet_neutrons = np.vectorize(gp.gap_triplet_neutrons, excluded={1})
 
 gap_parameters_protons = gp.proton_singlet_CCDK
 gap_parameters_neutrons = gp.neutron_triplet_TToa

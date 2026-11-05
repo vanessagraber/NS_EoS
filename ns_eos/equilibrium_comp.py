@@ -488,7 +488,7 @@ class EquationOfState:
         """
 
         v_F_n = hbar * self.k_F_n(n_b) / self.m_eff_L_n(n_b) * MeV / fm
-        vect_func = np.vectorize(gp.gap_triplet_neutrons, excluded="gap_parameters")
+        vect_func = np.vectorize(gp.gap_triplet_neutrons, excluded={1})
         Delta_n = vect_func(self.k_F_n(n_b), gap_parameters)
         xi_n = hbar * v_F_n / (np.pi * Delta_n)
 
@@ -501,7 +501,7 @@ class EquationOfState:
         """
 
         v_F_p = hbar * self.k_F_p(n_b) / self.m_eff_L_p(n_b) * MeV / fm
-        vect_func = np.vectorize(gp.gap_singlet_protons, excluded="gap_parameters")
+        vect_func = np.vectorize(gp.gap_singlet_protons, excluded={1})
         Delta_p = vect_func(self.k_F_p(n_b), gap_parameters)
         xi_p = hbar * v_F_p / (np.pi * Delta_p)
 
